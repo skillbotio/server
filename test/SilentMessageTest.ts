@@ -16,6 +16,19 @@ describe("SilentMessage", function() {
         it("Parses simple message", function() {
             const message = new SilentMessage("ask we study billionaires to play");
             assert.equal(message.skill.invocationName, "we study billionaires");
+            assert.equal(message.skillMessage, "play");
+        });
+
+        it("Parses simple message, ignores casing", function() {
+            const message = new SilentMessage("Ask we study Billionaires to Play");
+            assert.equal(message.skill.invocationName, "we study billionaires");
+            assert.equal(message.skillMessage, "play");
+        });
+
+        it("Parses launch message", function() {
+            const message = new SilentMessage("open we study Billionaires to Play");
+            assert.equal(message.skill.invocationName, "we study billionaires");
+            assert.isTrue(message.isLaunch());
         });
     });
 });
