@@ -16,6 +16,7 @@ export class SilentRouter {
             const message = request.body;
 
             console.log("Message: " + JSON.stringify(message));
+            const silentMessage = new SilentMesage(message);
 
             // We respond immediately or we start getting retries
             response.status(200);

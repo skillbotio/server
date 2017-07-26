@@ -4,4 +4,8 @@ export class Skill {
     public url: string;
     public interactionModel: string;
     public utterances: string;
+
+    public id(): string {
+        return this.name;
+    }
 }
