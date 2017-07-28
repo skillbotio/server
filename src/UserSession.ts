@@ -5,18 +5,16 @@ import {SilentReply} from "./SilentReply";
 export class UserSession {
     private enginesByID: {[id: string]: BSTAlexa} = {};
 
-    public constructor(userID: string) {
-
-    }
+    public constructor(private userID: string) {}
 
     public handleMessage(message: SilentMessage): Promise<SilentReply> {
         if (message.isForSkill()) {
             const alexa = this.emulator(message);
             return new Promise((resolve, reject) => {
-                alexa.spoken(message.skillMessage, function(error: any, response: any) {
+                alexa.context().setUserID(this.userID);
+                alexa.spoken(message.skillMessage, (error: any, response: any) => {
                     const reply = new SilentReply(message);
-
-                    resolve()
+                    resolve(reply);
                 });
             });
         } else {

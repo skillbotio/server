@@ -1,0 +1,2 @@
+- [ ] Need to get location of user
+- [ ] Handle slots better on Alexa skills

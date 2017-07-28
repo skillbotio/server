@@ -6,7 +6,7 @@ export class SilentMessage {
     public skill: Skill;
     public skillMessage: string;
 
-    public constructor(public userID, public fullMessage: string) {
+    public constructor(public userID: string, public fullMessage: string) {
         this.fullMessage = fullMessage.toLowerCase();
         this.parse();
     }

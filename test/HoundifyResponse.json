@@ -1,0 +1,377 @@
+{
+  "Format": "SoundHoundVoiceSearchResult",
+  "FormatVersion": "1.0",
+  "Status": "OK",
+  "NumToReturn": 1,
+  "AllResults": [
+    {
+      "CommandKind": "DateAndTimeCommand",
+      "SpokenResponse": "It is 6:46 PM in The Current Location.",
+      "SpokenResponseLong": "It is 6:46 PM in The Current Location.",
+      "WrittenResponse": "It is 6:46 pm in The Current Location.",
+      "WrittenResponseLong": "It is 6:46 pm in The Current Location.",
+      "AutoListen": false,
+      "ConversationState": {
+        "ConversationStateTime": 1501267571,
+        "QueryEntities": {
+          "Where": [
+            {
+              "Type": "Other",
+              "Label": "The Current Location",
+              "SpokenLabel": "The Current Location",
+              "Address": "",
+              "Geohash": "9q9k8qm68w11",
+              "Verified": true,
+              "HighConfidence": true,
+              "CurrentLocation": true,
+              "Latitude": "37.38830947875977",
+              "Longitude": "-121.9739685058594",
+              "ReferenceDatum": "WGS84",
+              "TimeZone": "Etc/UTC",
+              "Radius": 1,
+              "TypeID": 10,
+              "SourceID": 1,
+              "RecordID": 0
+            }
+          ]
+        },
+        "ResponseEntities": {
+          "When": [
+            {
+              "Instant": {
+                "Date": {
+                  "Year": 2017,
+                  "Month": 7,
+                  "DayOfMonth": 28
+                },
+                "Time": {
+                  "Hour": 18,
+                  "AmPmUnknown": false,
+                  "Minute": 46,
+                  "Second": 11
+                },
+                "DayPhase": "Unknown",
+                "YearMentioned": false,
+                "MonthMentioned": false,
+                "DayOfMonthMentioned": false,
+                "DayOfWeekMentioned": false,
+                "DateMentioned": false,
+                "TimeMentioned": false,
+                "TodayRequested": false,
+                "NowRequested": false,
+                "RelativeToNow": false,
+                "RelativeToConversationDateTime": false
+              }
+            }
+          ]
+        },
+        "DateAndTime": [
+          {
+            "DateAndTimeCommandKind": "TimeInLocationCommand",
+            "SourceDateTimeSpec": {
+              "DateAndTime": {
+                "Date": {
+                  "Year": 2017,
+                  "Month": 7,
+                  "DayOfMonth": 28
+                },
+                "Time": {
+                  "Hour": 18,
+                  "AmPmUnknown": false,
+                  "Minute": 46,
+                  "Second": 11
+                }
+              },
+              "DayPhase": "Unknown",
+              "YearMentioned": false,
+              "MonthMentioned": false,
+              "DayOfMonthMentioned": false,
+              "DayOfWeekMentioned": false,
+              "DateMentioned": false,
+              "TimeMentioned": false,
+              "TodayRequested": false,
+              "NowRequested": false,
+              "RelativeToNow": false,
+              "RelativeToConversationDateTime": false
+            },
+            "DestinationMapLocation": {
+              "Type": "Other",
+              "Label": "The Current Location",
+              "SpokenLabel": "The Current Location",
+              "Address": "",
+              "Geohash": "9q9k8qm68w11",
+              "Verified": true,
+              "HighConfidence": true,
+              "CurrentLocation": true,
+              "Latitude": "37.38830947875977",
+              "Longitude": "-121.9739685058594",
+              "ReferenceDatum": "WGS84",
+              "TimeZone": "Etc/UTC",
+              "Radius": 1,
+              "TypeID": 10,
+              "SourceID": 1,
+              "RecordID": 0
+            },
+            "DestinationDateTimeSpec": {
+              "DateAndTime": {
+                "Date": {
+                  "Year": 2017,
+                  "Month": 7,
+                  "DayOfMonth": 28
+                },
+                "Time": {
+                  "Hour": 18,
+                  "AmPmUnknown": false,
+                  "Minute": 46,
+                  "Second": 11
+                }
+              },
+              "DayPhase": "Unknown",
+              "YearMentioned": false,
+              "MonthMentioned": false,
+              "DayOfMonthMentioned": false,
+              "DayOfWeekMentioned": false,
+              "DateMentioned": false,
+              "TimeMentioned": false,
+              "TodayRequested": false,
+              "NowRequested": false,
+              "RelativeToNow": false,
+              "RelativeToConversationDateTime": false
+            },
+            "MapLocation": {
+              "Type": "Other",
+              "Label": "The Current Location",
+              "SpokenLabel": "The Current Location",
+              "Address": "",
+              "Geohash": "9q9k8qm68w11",
+              "Verified": true,
+              "HighConfidence": true,
+              "CurrentLocation": true,
+              "Latitude": "37.38830947875977",
+              "Longitude": "-121.9739685058594",
+              "ReferenceDatum": "WGS84",
+              "TimeZone": "Etc/UTC",
+              "Radius": 1,
+              "TypeID": 10,
+              "SourceID": 1,
+              "RecordID": 0
+            },
+            "DateTimeSpec": {
+              "DateAndTime": {
+                "Date": {
+                  "Year": 2017,
+                  "Month": 7,
+                  "DayOfMonth": 28
+                },
+                "Time": {
+                  "Hour": 18,
+                  "AmPmUnknown": false,
+                  "Minute": 46,
+                  "Second": 11
+                }
+              },
+              "DayPhase": "Unknown",
+              "YearMentioned": false,
+              "MonthMentioned": false,
+              "DayOfMonthMentioned": false,
+              "DayOfWeekMentioned": false,
+              "DateMentioned": false,
+              "TimeMentioned": false,
+              "TodayRequested": false,
+              "NowRequested": false,
+              "RelativeToNow": false,
+              "RelativeToConversationDateTime": false
+            }
+          }
+        ]
+      },
+      "ViewType": [
+        "Native",
+        "Template",
+        "HTML",
+        "None"
+      ],
+      "TemplateName": "VerticalTemplateList",
+      "TemplateData": {
+        "TemplateName": "VerticalTemplateList",
+        "Items": [
+          {
+            "DividerBelow": false,
+            "TemplateName": "SimpleText",
+            "TemplateData": {
+              "TemplateName": "SimpleText",
+              "Title": "6:46 pm",
+              "Subtitle": "The Current Location"
+            }
+          }
+        ]
+      },
+      "HTMLData": {
+        "HTMLHead": {
+          "CSS": "<link rel=\"stylesheet\" href=\"//static.midomi.com/corpus/H_Zk82fGHFX/build/css/templates.min.css\">",
+          "JS": "<script src=\"//static.midomi.com/corpus/H_Zk82fGHFX/build/js/templates.min.js\"></script>"
+        },
+        "SmallScreenHTML": "<div class='h-template h-simple-text'>\n  <h3 class='h-template-title h-simple-text-title'>6:46 pm\n  </h3>\n  <p class='h-template-subtitle h-simple-text-subtitle'>The Current Location\n  </p>\n</div>\n",
+        "LargeScreenHTML": "<div class='h-template h-simple-text'>\n  <h3 class='h-template-title h-simple-text-title'>6:46 pm\n  </h3>\n  <p class='h-template-subtitle h-simple-text-subtitle'>The Current Location\n  </p>\n</div>\n"
+      },
+      "DateAndTimeCommandKind": "TimeInLocationCommand",
+      "NativeData": {
+        "SourceDateTimeSpec": {
+          "DateAndTime": {
+            "Date": {
+              "Year": 2017,
+              "Month": 7,
+              "DayOfMonth": 28
+            },
+            "Time": {
+              "Hour": 18,
+              "AmPmUnknown": false,
+              "Minute": 46,
+              "Second": 11
+            }
+          },
+          "DayPhase": "Unknown",
+          "YearMentioned": false,
+          "MonthMentioned": false,
+          "DayOfMonthMentioned": false,
+          "DayOfWeekMentioned": false,
+          "DateMentioned": false,
+          "TimeMentioned": false,
+          "TodayRequested": false,
+          "NowRequested": false,
+          "RelativeToNow": false,
+          "RelativeToConversationDateTime": false
+        },
+        "DestinationMapLocation": {
+          "Type": "Other",
+          "Label": "The Current Location",
+          "SpokenLabel": "The Current Location",
+          "Address": "",
+          "Geohash": "9q9k8qm68w11",
+          "Verified": true,
+          "HighConfidence": true,
+          "CurrentLocation": true,
+          "Latitude": "37.38830947875977",
+          "Longitude": "-121.9739685058594",
+          "ReferenceDatum": "WGS84",
+          "TimeZone": "Etc/UTC",
+          "Radius": 1,
+          "TypeID": 10,
+          "SourceID": 1,
+          "RecordID": 0
+        },
+        "DestinationLocationsAndTimes": [
+          {
+            "MapLocation": {
+              "Type": "Other",
+              "Label": "The Current Location",
+              "SpokenLabel": "The Current Location",
+              "Address": "",
+              "Geohash": "9q9k8qm68w11",
+              "Verified": true,
+              "HighConfidence": true,
+              "CurrentLocation": true,
+              "Latitude": "37.38830947875977",
+              "Longitude": "-121.9739685058594",
+              "ReferenceDatum": "WGS84",
+              "TimeZone": "Etc/UTC",
+              "Radius": 1,
+              "TypeID": 10,
+              "SourceID": 1,
+              "RecordID": 0
+            },
+            "TimeZone": {
+              "OlsonName": "Etc/UTC"
+            },
+            "DateTimeSpec": {
+              "DateAndTime": {
+                "Date": {
+                  "Year": 2017,
+                  "Month": 7,
+                  "DayOfMonth": 28
+                },
+                "Time": {
+                  "Hour": 18,
+                  "AmPmUnknown": false,
+                  "Minute": 46,
+                  "Second": 11
+                }
+              },
+              "DayPhase": "Unknown",
+              "YearMentioned": false,
+              "MonthMentioned": false,
+              "DayOfMonthMentioned": false,
+              "DayOfWeekMentioned": false,
+              "DateMentioned": false,
+              "TimeMentioned": false,
+              "TodayRequested": false,
+              "NowRequested": false,
+              "RelativeToNow": false,
+              "RelativeToConversationDateTime": false
+            }
+          }
+        ],
+        "DestinationDateTimeSpec": {
+          "DateAndTime": {
+            "Date": {
+              "Year": 2017,
+              "Month": 7,
+              "DayOfMonth": 28
+            },
+            "Time": {
+              "Hour": 18,
+              "AmPmUnknown": false,
+              "Minute": 46,
+              "Second": 11
+            }
+          },
+          "DayPhase": "Unknown",
+          "YearMentioned": false,
+          "MonthMentioned": false,
+          "DayOfMonthMentioned": false,
+          "DayOfWeekMentioned": false,
+          "DateMentioned": false,
+          "TimeMentioned": false,
+          "TodayRequested": false,
+          "NowRequested": false,
+          "RelativeToNow": false,
+          "RelativeToConversationDateTime": false
+        },
+        "IsDateRequested": false,
+        "IsTimeInFuture": false,
+        "IsTimeInPast": false
+      }
+    }
+  ],
+  "Disambiguation": {
+    "NumToShow": 1,
+    "ChoiceData": [
+      {
+        "Transcription": "what time is it?",
+        "ConfidenceScore": 1,
+        "FixedTranscription": "what time is it"
+      }
+    ]
+  },
+  "ResultsAreFinal": [
+    true
+  ],
+  "DomainUsage": [
+    {
+      "Domain": "Date and Time",
+      "DomainUniqueID": "4cb78beb-0fc8-4ca0-ad08-bc6f8fcb0318",
+      "CreditsUsed": 1
+    }
+  ],
+  "BuildInfo": {
+    "User": "knightly",
+    "Date": "Tue Jul 25 16:50:43 PDT 2017",
+    "Machine": "s10766724502414.pnp.melodis.com",
+    "SVNRevision": "35917",
+    "SVNBranch": "dev_multi_machine",
+    "BuildNumber": "4287",
+    "Kind": "Low Fat",
+    "Variant": "release"
+  },
+  "ServerGeneratedId": "07e85a1b-aa7e-4faa-98a0-37e20e1ca3fd"
+}
