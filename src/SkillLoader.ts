@@ -18,7 +18,7 @@ export class SkillLoader {
         const modelFile = path.join(directory, "IntentSchema.json");
         const utterancesFile = path.join(directory, "SampleUtterances.txt");
         const skill = new Skill();
-        skill.interactionModel = fs.readFileSync(modelFile).toString();
+        skill.intentSchema = fs.readFileSync(modelFile).toString();
         skill.utterances = fs.readFileSync(utterancesFile).toString();
         skill.invocationName = "We Study Billionaires";
         skill.url = "https://streamer.bespoken.link";

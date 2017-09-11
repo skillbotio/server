@@ -1,6 +1,5 @@
 import {assert} from "chai";
 import {SilentMessage} from "../src/SilentMessage";
-import {SilentReply} from "../src/SilentReply";
 
 describe("SilentMessage", function() {
     const TEST_USER_ID = "123";

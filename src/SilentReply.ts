@@ -39,7 +39,14 @@ export class SilentReply {
     }
 
     private static cleanSSML(ssml: string): string {
-        return ssml;
+        const index = ssml.indexOf("<");
+        if (index !== -1) {
+            const endIndex = ssml.indexOf(">");
+            const firstPart = ssml.substring(0, index);
+            const secondPart = ssml.substring(endIndex + 1);
+            ssml = firstPart + SilentReply.cleanSSML(secondPart);
+        }
+        return ssml.trim();
     }
 
     public imageURL: string;
