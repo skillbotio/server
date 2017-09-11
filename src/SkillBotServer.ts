@@ -3,11 +3,14 @@ import * as express from "express";
 import * as https from "https";
 import * as net from "net";
 import {SimpleRestRouter} from "./SimpleRestRouter";
+import {SkillConfigurationRouter} from "./SkillConfigurationRouter";
+
+require("dotenv").config();
 
 export class SkillBotServer {
     private server: net.Server;
 
-    public start(): Promise<void> {
+    public async start(): Promise<void> {
         // console.log("CERT:" + process.env.SSL_CERT + " CLIENT: " + process.env.SLACK_CLIENT_ID);
         const serverPort = process.env.SSL_CERT ? 443 : 3001;
         const app = express();
@@ -20,6 +23,9 @@ export class SkillBotServer {
 
         app.use(new SimpleRestRouter().router());
 
+        const skillConfigurationRouter = await new SkillConfigurationRouter().router();
+        app.use(skillConfigurationRouter);
+
         if (process.env.SSL_CERT) {
             const cert = process.env.SSL_CERT as string;
             const key = process.env.SSL_KEY as string;
@@ -30,14 +36,14 @@ export class SkillBotServer {
             };
 
             this.server = https.createServer(credentials, app);
-            return new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 this.server.listen(serverPort, () => {
                     console.log("SkillBot running on port 443");
                     resolve();
                 });
             });
         } else {
-            return new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 this.server = app.listen(serverPort, () => {
                     console.log("SkillBot running on port: " + serverPort);
                     resolve();

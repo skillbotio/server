@@ -1,5 +1,5 @@
-import {SilentMessage} from "./SilentMessage";
-import {SilentReply} from "./SilentReply";
+import {SkillBotMessage} from "./SkillBotMessage";
+import {SkillBotReply} from "./SkillBotReply";
 const Houndify = require("houndify");
 
 export class HoundifyService {
@@ -14,7 +14,7 @@ export class HoundifyService {
         });
 
     }
-    public handle(message: SilentMessage): Promise<SilentReply> {
+    public handle(message: SkillBotMessage): Promise<SkillBotReply> {
         // See https://houndify.com/reference/RequestInfo.
         // Use bignumber-js (https://www.npmjs.com/package/bignumber.js)
         // for passing number out of safe number range in RequestInfo
@@ -32,7 +32,7 @@ export class HoundifyService {
                 onResponse: (response: any, info: any) => {
                     console.log("Houndify Response: " + JSON.stringify(response));
                     console.log("Houndify Info: " + JSON.stringify(info));
-                    const reply = new SilentReply(message);
+                    const reply = new SkillBotReply(message);
                     if (response.AllResults.length > 0) {
                         const result = response.AllResults[0];
                         if (result.TemplateData) {
@@ -47,5 +47,4 @@ export class HoundifyService {
             });
         });
     }
-
 }

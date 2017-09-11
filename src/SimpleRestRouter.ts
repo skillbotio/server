@@ -1,7 +1,8 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
-import {SilentMessage} from "./SilentMessage";
-import {SilentReply} from "./SilentReply";
+import {MessageHandler} from "./MessageHandler";
+import {SkillBotMessage} from "./SkillBotMessage";
+import {SkillBotReply} from "./SkillBotReply";
 
 export class SimpleRestRouter {
     public router(): express.Router {
@@ -19,7 +20,7 @@ export class SimpleRestRouter {
             const userID = request.query.userID;
             const messageString = request.query.message;
 
-            const message = new SilentMessage(userID, messageString);
+            const message = new SkillBotMessage(userID, messageString);
             const reply = await this.handleMessage(message);
 
             // We respond immediately or we start getting retries
@@ -32,11 +33,8 @@ export class SimpleRestRouter {
         return router;
     }
 
-    private handleMessage(message: SilentMessage): Promise<SilentReply> {
-        if (message.isForSkill()) {
-            return message.skill.invoke(message);
-        } else {
-            return Promise.reject("Not implemented yet");
-        }
+    private handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
+        const handler = new MessageHandler();
+        return handler.process(message);
     }
 }

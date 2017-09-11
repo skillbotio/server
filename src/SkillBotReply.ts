@@ -1,15 +1,15 @@
-import {SilentMessage} from "./SilentMessage";
+import {SkillBotMessage} from "./SkillBotMessage";
 
-export class SilentReply {
-    public static alexaResponseToReply(message: SilentMessage, response: any): SilentReply {
-        const reply = new SilentReply(message);
+export class SkillBotReply {
+    public static alexaResponseToReply(message: SkillBotMessage, response: any): SkillBotReply {
+        const reply = new SkillBotReply(message);
         const outputSpeech = response.response && response.response.outputSpeech;
         let isAudio = false;
         if (outputSpeech) {
             if (outputSpeech.type === "PlainText") {
                 reply.text = outputSpeech.text;
             } else if (outputSpeech.type === "SSML") {
-                reply.text = SilentReply.cleanSSML(outputSpeech.ssml);
+                reply.text = SkillBotReply.cleanSSML(outputSpeech.ssml);
                 isAudio = true;
             }
         }
@@ -44,7 +44,7 @@ export class SilentReply {
             const endIndex = ssml.indexOf(">");
             const firstPart = ssml.substring(0, index);
             const secondPart = ssml.substring(endIndex + 1);
-            ssml = firstPart + SilentReply.cleanSSML(secondPart);
+            ssml = firstPart + SkillBotReply.cleanSSML(secondPart);
         }
         return ssml.trim();
     }
@@ -54,6 +54,6 @@ export class SilentReply {
     public text: string;
     public title: string;
 
-    public constructor(public message: SilentMessage, text?: string) {}
+    public constructor(public message: SkillBotMessage, text?: string) {}
 
 }

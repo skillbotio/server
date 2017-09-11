@@ -1,7 +1,7 @@
 import {assert} from "chai";
 import * as nock from "nock";
 import * as request from "request-promise";
-import {Skill} from "../src/Skill";
+import {ISkillConfiguration} from "../src/ISkillConfiguration";
 import {SkillBotServer} from "../src/SkillBotServer";
 import {SkillManager} from "../src/SkillManager";
 
@@ -30,22 +30,26 @@ const interactionModel = {
 };
 
 describe("SkillBot End-to-End Tests", function() {
+    let server: SkillBotServer;
+    beforeEach( async () => {
+        server = new SkillBotServer();
+        await server.start();
+    });
+
+    afterEach(async () => {
+        await server.stop();
+    });
+
     describe("Calls mock skill", () => {
-        let server: SkillBotServer;
-        beforeEach(async () => {
-            server = new SkillBotServer();
-            await server.start();
-        });
+        it("Handles simple message", (done) => {
+            const skill: ISkillConfiguration = {
+                id: "testID",
+                interactionModel,
+                invocationName: "test",
+                name: "test skill",
+                url: "http://skill.com/fake_url",
+            };
 
-        afterEach(async () => {
-            await server.stop();
-        });
-
-        it("Parses simple response", (done) => {
-            const skill = new Skill();
-            skill.interactionModel = interactionModel;
-            skill.invocationName = "Test";
-            skill.url = "http://skill.com/fake_url";
             SkillManager.Instance.put(skill);
 
             // We use nock to intercept network calls and return a mock response
@@ -74,6 +78,38 @@ describe("SkillBot End-to-End Tests", function() {
                 assert.fail(err);
             });
 
+        });
+    });
+
+    describe("Saves/Updates with Skill Configuration", function () {
+        this.timeout(20000);
+        it("Saves and finds a skill", async () => {
+            const skill: ISkillConfiguration = {
+                id: "testIDToSave",
+                interactionModel,
+                invocationName: "test",
+                name: "test skill",
+                url: "http://skill.com/fake_url",
+            };
+
+            const saveOptions = {
+                body: skill,
+                json: true, // Automatically stringifies the body to JSON
+                method: "POST",
+                uri: "http://localhost:3001/skill",
+            };
+
+            await request(saveOptions);
+
+            const findOptions = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/skill/testIDToSave",
+            };
+
+            const savedSkill = await request(findOptions);
+            assert.equal(savedSkill.id, "testIDToSave");
+            assert.equal(savedSkill.interactionModel.intents.length, 3);
         });
     });
 });

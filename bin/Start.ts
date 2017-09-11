@@ -1,4 +1,4 @@
-import {Server} from "../src/Server";
+import {SkillBotServer} from "../src/SkillBotServer";
 
-const server = new Server();
+const server = new SkillBotServer();
 server.start();
