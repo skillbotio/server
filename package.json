@@ -1,8 +1,14 @@
 {
-  "name": "@jpkxapp/silent-home",
+  "name": "SkillBot",
   "version": "0.0.1",
-  "description": "Silent Home",
+  "description": "SkillBot",
   "main": "index.js",
+  "nyc": {
+    "exclude": [
+      "lib/test/*.js",
+      "test/**/*.js"
+    ]
+  },
   "scripts": {
     "pretest": "npm run tsc",
     "test": "nyc mocha lib/**/*Test.js",

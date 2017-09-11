@@ -4,7 +4,9 @@ import {ISkillConfiguration} from "../src/ISkillConfiguration";
 
 require("dotenv").config();
 
-describe("SkillBotMessageTest", () => {
+describe("DataStore Test", function() {
+    this.timeout(10000);
+
     describe("#initialize()", () => {
         it("Initializes succesfully", async () => {
             try {
@@ -16,8 +18,7 @@ describe("SkillBotMessageTest", () => {
         });
     });
 
-    describe("#saveSkill()", function() {
-        this.timeout(10000);
+    describe("#saveSkill()", () => {
         it("Saves and fetches a record", async () => {
             const ds = await new DataStore().initialize();
             const skill: ISkillConfiguration = {
