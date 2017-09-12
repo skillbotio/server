@@ -13,6 +13,7 @@ describe("DataStore Test", function() {
                 const ds = await new DataStore().initialize();
                 assert.isDefined(ds);
             } catch (e) {
+                console.log(e);
                 assert.fail(e);
             }
         });
@@ -20,7 +21,7 @@ describe("DataStore Test", function() {
 
     describe("#saveSkill()", () => {
         it("Saves and fetches a record", async () => {
-            const ds = await new DataStore().initialize();
+            const ds = new DataStore().initialize();
             const skill: ISkillConfiguration = {
                 id: "testID",
                 interactionModel: { model: true },
@@ -33,6 +34,21 @@ describe("DataStore Test", function() {
             const savedSkill = await ds.findSkill(skill.id) as ISkillConfiguration;
             assert.equal(savedSkill.name, "test skill");
             assert.isTrue(savedSkill.interactionModel.model);
+        });
+    });
+
+    describe("#findSkill()", () => {
+        it("Find a record", async () => {
+            const ds = new DataStore().initialize();
+            const savedSkill = await ds.findSkill("testID") as ISkillConfiguration;
+            assert.equal(savedSkill.name, "test skill");
+            assert.isTrue(savedSkill.interactionModel.model);
+        });
+
+        it("Cannot find a record", async () => {
+            const ds = new DataStore().initialize();
+            const savedSkill = await ds.findSkill("testIDDoesNotExist") as ISkillConfiguration;
+            assert.isUndefined(savedSkill);
         });
     });
 });
