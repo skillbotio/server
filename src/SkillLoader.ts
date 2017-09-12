@@ -23,6 +23,8 @@ export class SkillLoader {
             invocationName: "We Study Billionaires",
             name: "We Study Billionaires",
             sampleUtterances: fs.readFileSync(utterancesFile).toString(),
+            secretKey: "DummySecretKey",
+            sourceID: "DummySourceID",
             url: "https://streamer.bespoken.link",
         };
 

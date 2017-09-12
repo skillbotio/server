@@ -1,6 +1,6 @@
 import {assert} from "chai";
 import * as nock from "nock";
-import * as request from "request-promise";
+import * as request from "request-promise-native";
 import {ISkillConfiguration} from "../src/ISkillConfiguration";
 import {SkillBotServer} from "../src/SkillBotServer";
 import {SkillManager} from "../src/SkillManager";
@@ -47,6 +47,8 @@ describe("SkillBot End-to-End Tests", function() {
                 interactionModel,
                 invocationName: "test",
                 name: "test skill",
+                secretKey: "testSecretKey",
+                sourceID: "testSourceID",
                 url: "http://skill.com/fake_url",
             };
 
@@ -81,14 +83,18 @@ describe("SkillBot End-to-End Tests", function() {
         });
     });
 
-    describe("Saves/Updates with Skill Configuration", function () {
+    describe("Saves/Updates with Skill Configuration", function() {
         this.timeout(20000);
         it("Saves and finds a skill", async () => {
+            // This test relies on running against the dev firebase instance
+            // It also requires there already be a source "testDoNotDelete"
             const skill: ISkillConfiguration = {
                 id: "testIDToSave",
                 interactionModel,
                 invocationName: "test",
                 name: "test skill",
+                secretKey: "testSecretKey",
+                sourceID: "testDoNotDelete",
                 url: "http://skill.com/fake_url",
             };
 
@@ -102,6 +108,9 @@ describe("SkillBot End-to-End Tests", function() {
             await request(saveOptions);
 
             const findOptions = {
+                headers: {
+                    secretKey: "testSecretKey",
+                },
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
                 uri: "http://localhost:3001/skill/testIDToSave",
@@ -110,6 +119,42 @@ describe("SkillBot End-to-End Tests", function() {
             const savedSkill = await request(findOptions);
             assert.equal(savedSkill.id, "testIDToSave");
             assert.equal(savedSkill.interactionModel.intents.length, 3);
+        });
+
+        it("Cannot find a skill with bad key", async () => {
+            const findOptions = {
+                headers: {
+                    secretKey: "nonExistentKey",
+                },
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/skill/testIDToSave",
+            };
+
+            try {
+                await request(findOptions);
+            } catch (e) {
+                assert.equal(e.name, "StatusCodeError");
+                assert.isTrue(e.message.startsWith("403"));
+            }
+        });
+
+        it("Cannot find a skill", async () => {
+            const findOptions = {
+                headers: {
+                    secretKey: "nonExistentKey",
+                },
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/skill/testIDDoesNotExist",
+            };
+
+            try {
+                await request(findOptions);
+            } catch (e) {
+                assert.equal(e.name, "StatusCodeError");
+                assert.isTrue(e.message.startsWith("404"));
+            }
         });
     });
 });

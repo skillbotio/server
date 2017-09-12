@@ -27,6 +27,8 @@ describe("DataStore Test", function() {
                 interactionModel: { model: true },
                 invocationName: "test",
                 name: "test skill",
+                secretKey: "testSecretKey",
+                sourceID: "testSourceID",
                 url: "http://skill.com/fake_url",
             };
 

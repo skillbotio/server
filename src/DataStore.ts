@@ -45,4 +45,14 @@ export class DataStore {
             }
         });
     }
+
+    public findSource(id: string): Promise<any | undefined> {
+        return this.database.ref("sources/" + id).once("value").then((snapshot: any) => {
+            if (snapshot.val()) {
+                return Promise.resolve(snapshot.val());
+            } else {
+                return Promise.resolve(undefined);
+            }
+        });
+    }
 }

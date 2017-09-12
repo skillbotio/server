@@ -1,9 +1,11 @@
 export interface ISkillConfiguration {
     id: string;
-    name: string;
-    invocationName: string;
-    url: string;
     intentSchema?: any;
     interactionModel?: any;
+    invocationName: string;
+    name: string;
     sampleUtterances?: any;
+    secretKey: string;
+    sourceID: string;
+    url: string;
 }
