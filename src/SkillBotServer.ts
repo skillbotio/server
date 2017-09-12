@@ -4,6 +4,7 @@ import * as https from "https";
 import * as net from "net";
 import {SimpleRestRouter} from "./SimpleRestRouter";
 import {SkillConfigurationRouter} from "./SkillConfigurationRouter";
+import {SkillLoader} from "./SkillLoader";
 
 require("dotenv").config();
 
@@ -23,8 +24,9 @@ export class SkillBotServer {
 
         app.use(new SimpleRestRouter().router());
 
-        const skillConfigurationRouter = await new SkillConfigurationRouter().router();
-        app.use(skillConfigurationRouter);
+        app.use(new SkillConfigurationRouter().router());
+
+        SkillLoader.loadAll();
 
         if (process.env.SSL_CERT) {
             const cert = process.env.SSL_CERT as string;

@@ -4,7 +4,7 @@ import {DataStore} from "./DataStore";
 import {ISkillConfiguration} from "./ISkillConfiguration";
 
 export class SkillConfigurationRouter {
-    public router(): Promise<express.Router> {
+    public router(): express.Router {
         const router = express.Router();
 
         router.use(bodyParser.json());
@@ -32,6 +32,18 @@ export class SkillConfigurationRouter {
             response.json(skill);
         });
 
+        router.get("/skill", async (request: express.Request, response: express.Response) => {
+            const token = request.header("x-access-token");
+            if (token !== process.env.API_ACCESS_TOKEN) {
+                response.status(400);
+                response.send("Invalid request - must include secretKey as header to validate");
+                return;
+            }
+
+            const skills = await dataStore.findSkills();
+            response.json(skills);
+        });
+
         router.post("/skill", async (request: express.Request, response: express.Response) => {
             const skillJSON: ISkillConfiguration = request.body;
             try {
@@ -44,10 +56,6 @@ export class SkillConfigurationRouter {
                 } else if (source.secretKey !== secretKey) {
                     return this.notOkay(response, 403, "Invalid request - secretKey does not match for skill");
                 }
-                if (!sourceID || !secretKey) {
-                    return this.notOkay(response, 404,
-                        "Invalid request - must include sourceID and secretKey of source to associate with");
-                }
 
                 await dataStore.saveSkill(skillJSON);
                 // Just send a 200 if this saves
@@ -59,15 +67,13 @@ export class SkillConfigurationRouter {
         });
 
         const dataStore = new DataStore();
-        return new Promise((resolve) => {
-            dataStore.initialize();
-            resolve(router);
-        });
+        dataStore.initialize();
+        return router;
     }
 
     private notOkay(response: express.Response, statusCode: number, message: string): void {
-        response.status(404);
-        response.send("Invalid request - must include sourceID and secretKey of source to associate with");
+        response.status(statusCode);
+        response.send(message);
         return;
     }
 }

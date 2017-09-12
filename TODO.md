@@ -4,6 +4,9 @@
 - [ ] Test for chaning user id across calls
 - [ ] Copy over SilentEchoBot slack code
 - [ ] Endpoints to save skill info
+- [ ] Export interaction model from virtual alexa for usage here
+- [ ] Allow skills to be scoped to just a user
+- [ ] save interactions to dynamo
 
 - [ ] Integration as command with bst ("botify?")
 - [ ] Make enabling hound optional

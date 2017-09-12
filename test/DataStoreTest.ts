@@ -53,4 +53,12 @@ describe("DataStore Test", function() {
             assert.isUndefined(savedSkill);
         });
     });
+
+    describe("#findSkills()", () => {
+        it("Finds skills", async () => {
+            const ds = new DataStore().initialize();
+            const savedSkills = await ds.findSkills() as any;
+            assert.equal(Object.keys(savedSkills).length, 3);
+        });
+    });
 });

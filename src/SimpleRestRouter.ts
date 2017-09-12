@@ -18,16 +18,22 @@ export class SimpleRestRouter {
         router.get("/message", async (request: express.Request, response: express.Response) => {
             // const messageJSON = request.body;
             const userID = request.query.userID;
-            const messageString = request.query.message;
+            const messageString = request.query.utterance;
 
             const message = new SkillBotMessage(userID, messageString);
-            const reply = await this.handleMessage(message);
-
-            // We respond immediately or we start getting retries
-            response.status(200);
-            response.send(JSON.stringify(reply));
-            console.log("Response sent");
-            return;
+            try {
+                const reply = await this.handleMessage(message);
+                // We respond immediately or we start getting retries
+                response.status(200);
+                response.send(JSON.stringify(reply));
+                console.log("Response sent");
+                return;
+            } catch (e) {
+                console.error(e);
+                response.status(500);
+                response.send(e.toString());
+                return;
+            }
         });
 
         return router;

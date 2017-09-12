@@ -31,7 +31,7 @@ const interactionModel = {
 
 describe("SkillBot End-to-End Tests", function() {
     let server: SkillBotServer;
-    beforeEach( async () => {
+    beforeEach(async () => {
         server = new SkillBotServer();
         await server.start();
     });
@@ -69,13 +69,13 @@ describe("SkillBot End-to-End Tests", function() {
             const options = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&message=ask test play",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play",
             };
             request(options).then((reply) => {
                 assert.isDefined(reply.text);
                 assert.equal(reply.text, "Hi");
                 done();
-            }).catch( (err) => {
+            }).catch((err) => {
                 console.log(err);
                 assert.fail(err);
             });

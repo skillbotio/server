@@ -4,7 +4,7 @@ import {ISkillUploadInfo, SkillConfigurationClient} from "../src/SkillConfigurat
 
 describe("SkillConfiguration Client Test", function() {
     let server: SkillBotServer;
-    beforeEach( async () => {
+    beforeEach(async () => {
         server = new SkillBotServer();
         await server.start();
     });

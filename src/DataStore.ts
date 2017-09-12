@@ -46,6 +46,16 @@ export class DataStore {
         });
     }
 
+    public findSkills(): Promise<{[id: string]: ISkillConfiguration}> {
+        return this.database.ref("skills").once("value").then((snapshot: any) => {
+            if (snapshot.val()) {
+                return Promise.resolve(snapshot.val());
+            } else {
+                return Promise.resolve(undefined);
+            }
+        });
+    }
+
     public findSource(id: string): Promise<any | undefined> {
         return this.database.ref("sources/" + id).once("value").then((snapshot: any) => {
             if (snapshot.val()) {

@@ -15,6 +15,10 @@ export class SkillConfigurationClient {
             const sampleUtterances: {[id: string]: string[]} = {};
 
             for (const line of lines) {
+                if (line.trim().length === 0) {
+                    continue;
+                }
+
                 const intent = line.split(" ", 2)[0];
                 const utterance = line.split(" ", 2)[1];
                 let utterances: string[];
@@ -46,7 +50,7 @@ export class SkillConfigurationClient {
         try {
             return await request(postOptions);
         } catch (e) {
-            if (e.response.statusCode === 404) {
+            if (e.response && e.response.statusCode === 404) {
                 throw new Error("Source does not exist in dashboard. Please create it.");
             } else {
                 throw e;

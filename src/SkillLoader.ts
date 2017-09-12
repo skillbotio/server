@@ -1,17 +1,17 @@
 import * as fs from "fs";
 import * as path from "path";
 import {ISkillConfiguration} from "./ISkillConfiguration";
-
-const directories = ["/Users/jpk/dev/streamer/speechAssets"];
+import {DataStore} from "./DataStore";
+import {SkillManager} from "./SkillManager";
 
 export class SkillLoader {
 
-    public loadAll(): ISkillConfiguration[] {
-        const skills = [];
-        for (const directory of directories) {
-            skills.push(this.load(directory));
+    public static async loadAll(): Promise<void> {
+        const ds = new DataStore().initialize();
+        const skills: {[id: string]: ISkillConfiguration} = await ds.findSkills();
+        for (const skillName of Object.keys(skills)) {
+            SkillManager.Instance.put(skills[skillName]);
         }
-        return skills;
     }
 
     public load(directory: string): ISkillConfiguration {
