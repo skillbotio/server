@@ -71,6 +71,7 @@ describe("SkillBot End-to-End Tests", function() {
                 method: "GET",
                 uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play",
             };
+
             request(options).then((reply) => {
                 assert.isDefined(reply.text);
                 assert.equal(reply.text, "Hi");

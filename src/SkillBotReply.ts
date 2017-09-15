@@ -35,6 +35,15 @@ export class SkillBotReply {
                 }
             }
         }
+
+        if (response.response.directives) {
+            const directive = response.response.directives[0];
+            if (directive.type === "AudioPlayer.Play") {
+                reply.streamURL = directive.audioItem.stream.url;
+            }
+        }
+
+        reply.raw = response;
         return reply;
     }
 
@@ -50,6 +59,8 @@ export class SkillBotReply {
     }
 
     public imageURL: string;
+    public raw: any;
+    public streamURL: string;
     public subTitle: string;
     public text: string;
     public title: string;

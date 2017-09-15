@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowUnreachableCode": false,
     "allowJs": false,
-    "declaration": true,
+    "declaration": false,
     "module": "commonjs",
     "noImplicitAny": true,
     "noUnusedLocals": true,

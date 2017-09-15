@@ -3,7 +3,15 @@ import {SkillBotReply} from "./SkillBotReply";
 import {UserSession} from "./UserSession";
 
 export class MessageHandler {
+    public static Instance(): MessageHandler {
+        return MessageHandler.INSTANCE;
+    }
+
+    private static INSTANCE = new MessageHandler();
+
     private sessions: {[id: string]: UserSession} = {};
+
+    private constructor() {}
 
     public process(message: SkillBotMessage): Promise<SkillBotReply> {
         let session;

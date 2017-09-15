@@ -8,7 +8,6 @@ export class SkillConfigurationRouter {
         const router = express.Router();
 
         router.use(bodyParser.json());
-        router.use(bodyParser.urlencoded());
 
         router.get("/skill/:skillID", async (request: express.Request, response: express.Response) => {
             const secretKey = request.header("secretKey");

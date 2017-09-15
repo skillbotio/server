@@ -2,7 +2,6 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import {MessageHandler} from "./MessageHandler";
 import {SkillBotMessage} from "./SkillBotMessage";
-import {SkillBotReply} from "./SkillBotReply";
 
 export class SimpleRestRouter {
     public router(): express.Router {
@@ -22,7 +21,7 @@ export class SimpleRestRouter {
 
             const message = new SkillBotMessage(userID, messageString);
             try {
-                const reply = await this.handleMessage(message);
+                const reply = await MessageHandler.Instance().process(message);
                 // We respond immediately or we start getting retries
                 response.status(200);
                 response.send(JSON.stringify(reply));
@@ -37,10 +36,5 @@ export class SimpleRestRouter {
         });
 
         return router;
-    }
-
-    private handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
-        const handler = new MessageHandler();
-        return handler.process(message);
     }
 }

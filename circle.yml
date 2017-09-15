@@ -1,0 +1,16 @@
+machine:
+  node:
+    version: 6.9.2
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - wget https://raw.githubusercontent.com/bespoken/circle-deploy/master/deployment.sh
+    - chmod +x deployment.sh
+
+deployment:
+  dev:
+    branch: /.*/
+    commands:
+      - ./deployment.sh skillbot-server dev $CIRCLE_BRANCH 209.177.91.119 s3

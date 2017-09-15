@@ -6,7 +6,7 @@
 - [ ] Endpoints to save skill info
 - [ ] Export interaction model from virtual alexa for usage here
 - [ ] Allow skills to be scoped to just a user
-- [ ] save interactions to dynamo
+- [ ] save all interactions to dynamo
 
 - [ ] Integration as command with bst ("botify?")
 - [ ] Make enabling hound optional

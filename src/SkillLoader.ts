@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import {ISkillConfiguration} from "./ISkillConfiguration";
 import {DataStore} from "./DataStore";
+import {ISkillConfiguration} from "./ISkillConfiguration";
 import {SkillManager} from "./SkillManager";
 
 export class SkillLoader {

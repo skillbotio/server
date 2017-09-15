@@ -26,6 +26,7 @@ export class SkillBotServer {
 
         app.use(new SkillConfigurationRouter().router());
 
+        // This grabs all the skills we know about from the data store
         SkillLoader.loadAll();
 
         if (process.env.SSL_CERT) {
