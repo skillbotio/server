@@ -33,7 +33,7 @@ describe("SkillBot End-to-End Tests", function() {
     let server: SkillBotServer;
     beforeEach(async () => {
         server = new SkillBotServer();
-        await server.start();
+        await server.start(true);
     });
 
     afterEach(async () => {

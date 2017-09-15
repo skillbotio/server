@@ -11,9 +11,9 @@ require("dotenv").config();
 export class SkillBotServer {
     private server: net.Server;
 
-    public async start(): Promise<void> {
+    public async start(forceNoSSL: boolean = false): Promise<void> {
         // console.log("CERT:" + process.env.SSL_CERT + " CLIENT: " + process.env.SLACK_CLIENT_ID);
-        const serverPort = process.env.SSL_CERT ? 443 : 3001;
+        const serverPort = forceNoSSL || !process.env.SSL_CERT ? 3001 : 443;
         const app = express();
 
         // JSON Parser
@@ -29,7 +29,7 @@ export class SkillBotServer {
         // This grabs all the skills we know about from the data store
         SkillLoader.loadAll();
 
-        if (process.env.SSL_CERT) {
+        if (!forceNoSSL && process.env.SSL_CERT) {
             const cert = process.env.SSL_CERT as string;
             const key = process.env.SSL_KEY as string;
 
