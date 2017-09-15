@@ -6,7 +6,12 @@
 - [ ] Endpoints to save skill info
 - [ ] Export interaction model from virtual alexa for usage here
 - [ ] Allow skills to be scoped to just a user
-- [ ] save all interactions to dynamo
+- [ ] save all interactions to dynamo? Or Mongo?
+- [ ] support for flash briefings
+- [ ] ask people for their location to get started
+- [ ] add user type to payload
+- [ ] add audioURL for ssml payload that concatnates voice and text using tts?
+- [ ] add help command
 
 - [ ] Integration as command with bst ("botify?")
 - [ ] Make enabling hound optional

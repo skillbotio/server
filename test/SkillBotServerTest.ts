@@ -59,6 +59,13 @@ describe("SkillBot End-to-End Tests", function() {
                 .post("/fake_url")
                 .reply(200, {
                     response: {
+                        card: {
+                            content: "My TextField",
+                            image: {
+                                largeImageUrl: "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg",
+                            },
+                            title: "My Title",
+                        },
                         outputSpeech: {
                             ssml: "<speak> Hi </speak>",
                             type: "SSML",
@@ -75,6 +82,9 @@ describe("SkillBot End-to-End Tests", function() {
             request(options).then((reply) => {
                 assert.isDefined(reply.text);
                 assert.equal(reply.text, "Hi");
+                assert.equal(reply.card.content, "My TextField");
+                assert.equal(reply.card.title, "My Title");
+                assert.equal(reply.card.imageURL, "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg");
                 done();
             }).catch((err) => {
                 console.log(err);

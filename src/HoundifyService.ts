@@ -37,7 +37,8 @@ export class HoundifyService {
                         const result = response.AllResults[0];
                         if (result.TemplateData) {
                             if (result.TemplateData.Items[0].TemplateName === "ImageCarousel") {
-                                reply.imageURL = result.TemplateData.Items[0].TemplateData.Slides[0].ImageURL;
+                                reply.card = {};
+                                reply.card.imageURL = result.TemplateData.Items[0].TemplateData.Slides[0].ImageURL;
                             }
                         }
                         reply.text = result.WrittenResponseLong;

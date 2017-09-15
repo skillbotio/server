@@ -16,22 +16,23 @@ export class SkillBotReply {
 
         const card = response.response && response.response.card;
         if (card) {
-            reply.title = card.title;
+            reply.card = {};
+            reply.card.title = card.title;
             // If the reply is audio, we prefer the card text if available
             // Then no need for text-to-speech
             if (isAudio) {
                 if (card.content) {
-                    reply.text = card.content;
+                    reply.card.content = card.content;
                 } else if (card.text) {
-                    reply.text = card.text;
+                    reply.card.content = card.text;
                 }
             }
 
             if (card.image) {
-                if (card.largeImageUrl) {
-                    reply.imageURL = card.image.largeImageUrl;
+                if (card.image.largeImageUrl) {
+                    reply.card.imageURL = card.image.largeImageUrl;
                 } else if (card.smallImageUrl) {
-                    reply.imageURL = card.image.smallImageUrl;
+                    reply.card.imageURL = card.image.smallImageUrl;
                 }
             }
         }
@@ -58,13 +59,18 @@ export class SkillBotReply {
         return ssml.trim();
     }
 
-    public imageURL: string;
+    public card?: ISkillBotCard;
     public raw: any;
     public streamURL: string;
-    public subTitle: string;
     public text: string;
-    public title: string;
 
     public constructor(public message: SkillBotMessage, text?: string) {}
 
+}
+
+export interface ISkillBotCard {
+    content?: string;
+    imageURL?: string;
+    subTitle?: string;
+    title?: string;
 }
