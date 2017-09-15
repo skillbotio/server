@@ -9,9 +9,7 @@ services:
 - docker:dind
 
 before_script:
-  - apk update
-  - apk add ca-certificates
-  - update-ca-certificates
+  - apk --no-cache add openssl
   - wget https://raw.githubusercontent.com/bespoken/circle-deploy/master/deployment.sh
   - chmod +x deployment.sh
 
