@@ -2,7 +2,7 @@ FROM node:6.3.0
 
 MAINTAINER jkelvie
 
-EXPOSE 443 3002
+EXPOSE 443 3001
 
 WORKDIR /opt
 
