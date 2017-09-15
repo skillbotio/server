@@ -55,6 +55,7 @@ export class SkillBotReply {
     public static sessionEnded(message: SkillBotMessage) {
         const reply = new SkillBotReply(message);
         reply.sessionEnded = true;
+        reply.text = "Goodbye!";
         return reply;
     }
 

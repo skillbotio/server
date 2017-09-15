@@ -131,7 +131,7 @@ describe("SkillBot End-to-End Tests", function() {
                 .times(1)
                 .reply(200, {
                     response: {
-                        shouldEndSession: true
+                        shouldEndSession: true,
                     },
                 });
 
@@ -199,7 +199,7 @@ describe("SkillBot End-to-End Tests", function() {
                 .times(1)
                 .reply(200, {
                     response: {
-                        shouldEndSession: true
+                        shouldEndSession: true,
                     },
                 });
 
@@ -218,7 +218,7 @@ describe("SkillBot End-to-End Tests", function() {
             };
             reply = await request(callTwo);
             assert.isTrue(reply.sessionEnded);
-            assert.isUndefined(reply.text);
+            assert.equal(reply.text, "Goodbye!");
         });
     });
 

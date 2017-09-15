@@ -1,16 +1,10 @@
 - [X] Handle slots better on Alexa skills
 - [X] Remote skill loader
-- [ ] Handle session ended repsonses and explicit session ends
-- [ ] Test for preserving user id across calls
-- [ ] Test for chaning user id across calls
-- [ ] Copy over SilentEchoBot slack code
-- [ ] Endpoints to save skill info
-- [ ] Export interaction model from virtual alexa for usage here
-- [ ] Allow skills to be scoped to just a user
+- [X] Handle session ended repsonses and explicit session ends
 - [ ] save all interactions to dynamo? Or Mongo?
-- [ ] support for flash briefings
+    - [ ] add user type to payload
 - [ ] ask people for their location to get started
-- [ ] add user type to payload
+- [ ] support for flash briefings
 - [ ] add audioURL for ssml payload that concatnates voice and text using tts?
 - [ ] add help command
 - [ ] Get image for skill to show
