@@ -34,6 +34,18 @@ describe("SkillBot End-to-End Tests", function() {
     beforeEach(async () => {
         server = new SkillBotServer();
         await server.start(true);
+
+        const skill: ISkillConfiguration = {
+            id: "testID",
+            interactionModel,
+            invocationName: "test",
+            name: "test skill",
+            secretKey: "testSecretKey",
+            sourceID: "testSourceID",
+            url: "http://skill.com/fake_url",
+        };
+
+        SkillManager.Instance.put(skill);
     });
 
     afterEach(async () => {
@@ -42,18 +54,6 @@ describe("SkillBot End-to-End Tests", function() {
 
     describe("Calls mock skill", () => {
         it("Handles simple message", (done) => {
-            const skill: ISkillConfiguration = {
-                id: "testID",
-                interactionModel,
-                invocationName: "test",
-                name: "test skill",
-                secretKey: "testSecretKey",
-                sourceID: "testSourceID",
-                url: "http://skill.com/fake_url",
-            };
-
-            SkillManager.Instance.put(skill);
-
             // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
                 .post("/fake_url")
@@ -91,6 +91,134 @@ describe("SkillBot End-to-End Tests", function() {
                 assert.fail(err);
             });
 
+        });
+
+        it("Handles session interaction", async () => {
+            const skill: ISkillConfiguration = {
+                id: "testID",
+                interactionModel,
+                invocationName: "test",
+                name: "test skill",
+                secretKey: "testSecretKey",
+                sourceID: "testSourceID",
+                url: "http://skill.com/fake_url",
+            };
+
+            SkillManager.Instance.put(skill);
+
+            // We use nock to intercept network calls and return a mock response
+            nock("http://skill.com")
+                .post("/fake_url")
+                .times(2)
+                .reply(200, {
+                    response: {
+                        card: {
+                            content: "My TextField",
+                            image: {
+                                largeImageUrl: "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg",
+                            },
+                            title: "My Title",
+                        },
+                        outputSpeech: {
+                            ssml: "<speak> Hi </speak>",
+                            type: "SSML",
+                        },
+                    },
+                });
+
+            nock("http://skill.com")
+                .post("/fake_url")
+                .times(1)
+                .reply(200, {
+                    response: {
+                        shouldEndSession: true
+                    },
+                });
+
+            const options = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play",
+            };
+
+            let reply = await request(options);
+
+            const callTwo = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=play",
+            };
+            reply = await request(callTwo);
+            assert.isFalse(reply.sessionEnded);
+            assert.equal(reply.text, "Hi");
+
+            const callThree = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=play",
+            };
+            reply = await request(callThree);
+            assert.isTrue(reply.sessionEnded);
+        });
+
+        it("Handles explicit session end", async () => {
+            const skill: ISkillConfiguration = {
+                id: "testID",
+                interactionModel,
+                invocationName: "test",
+                name: "test skill",
+                secretKey: "testSecretKey",
+                sourceID: "testSourceID",
+                url: "http://skill.com/fake_url",
+            };
+
+            SkillManager.Instance.put(skill);
+
+            // We use nock to intercept network calls and return a mock response
+            nock("http://skill.com")
+                .post("/fake_url")
+                .times(2)
+                .reply(200, {
+                    response: {
+                        card: {
+                            content: "My TextField",
+                            image: {
+                                largeImageUrl: "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg",
+                            },
+                            title: "My Title",
+                        },
+                        outputSpeech: {
+                            ssml: "<speak> Hi </speak>",
+                            type: "SSML",
+                        },
+                    },
+                });
+
+            nock("http://skill.com")
+                .post("/fake_url")
+                .times(1)
+                .reply(200, {
+                    response: {
+                        shouldEndSession: true
+                    },
+                });
+
+            const options = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play",
+            };
+
+            let reply = await request(options);
+
+            const callTwo = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=quit",
+            };
+            reply = await request(callTwo);
+            assert.isTrue(reply.sessionEnded);
+            assert.isUndefined(reply.text);
         });
     });
 

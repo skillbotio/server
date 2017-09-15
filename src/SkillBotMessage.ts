@@ -13,6 +13,10 @@ export class SkillBotMessage {
         return (this.skillUtterance !== undefined);
     }
 
+    public isEndSession(): boolean {
+        return ["exit", "quit"].some((v) => v === this.fullMessage);
+    }
+
     private parse(): void {
         const regex = new RegExp("(ask|tell|open|launch)\\s(.*)");
         const matchArray = this.fullMessage.match(regex);

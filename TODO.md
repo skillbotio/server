@@ -1,5 +1,6 @@
 - [X] Handle slots better on Alexa skills
 - [X] Remote skill loader
+- [ ] Handle session ended repsonses and explicit session ends
 - [ ] Test for preserving user id across calls
 - [ ] Test for chaning user id across calls
 - [ ] Copy over SilentEchoBot slack code
@@ -12,6 +13,9 @@
 - [ ] add user type to payload
 - [ ] add audioURL for ssml payload that concatnates voice and text using tts?
 - [ ] add help command
+- [ ] Get image for skill to show
+- [ ] How will default skill make data accessible?
+- [ ] how to handle literals?
 
 - [ ] Integration as command with bst ("botify?")
 - [ ] Make enabling hound optional

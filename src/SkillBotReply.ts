@@ -44,7 +44,17 @@ export class SkillBotReply {
             }
         }
 
+        if (response.response.shouldEndSession) {
+            reply.sessionEnded = true;
+        }
+
         reply.raw = response;
+        return reply;
+    }
+
+    public static sessionEnded(message: SkillBotMessage) {
+        const reply = new SkillBotReply(message);
+        reply.sessionEnded = true;
         return reply;
     }
 
@@ -59,6 +69,7 @@ export class SkillBotReply {
         return ssml.trim();
     }
 
+    public sessionEnded: boolean = false;
     public card?: ISkillBotCard;
     public raw: any;
     public streamURL: string;
