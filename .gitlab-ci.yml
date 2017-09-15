@@ -1,10 +1,8 @@
+image: node:6
+
 before_script:
   - wget https://raw.githubusercontent.com/bespoken/circle-deploy/master/deployment.sh
   - chmod +x deployment.sh
-
-test:
-  script:
-  - npm test
 
 deploy-dev:
   stage: deploy
