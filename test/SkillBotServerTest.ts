@@ -56,7 +56,10 @@ describe("SkillBot End-to-End Tests", function() {
         it("Handles simple message", (done) => {
             // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
-                .post("/fake_url")
+                .post("/fake_url", (body: any) => {
+                    // Test to make sure that the body is set correctly
+                    return body.skillbot && body.skillbot.source === "slack";
+                })
                 .reply(200, {
                     response: {
                         card: {
@@ -76,7 +79,7 @@ describe("SkillBot End-to-End Tests", function() {
             const options = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play&source=slack",
             };
 
             request(options).then((reply) => {

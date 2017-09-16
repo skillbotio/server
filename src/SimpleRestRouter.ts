@@ -18,8 +18,9 @@ export class SimpleRestRouter {
             // const messageJSON = request.body;
             const userID = request.query.userID;
             const messageString = request.query.utterance;
+            const source = request.query.source;
 
-            const message = new SkillBotMessage(userID, messageString);
+            const message = new SkillBotMessage(source, userID, messageString);
             try {
                 const reply = await MessageHandler.Instance().process(message);
                 // We respond immediately or we start getting retries

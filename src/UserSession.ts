@@ -10,7 +10,7 @@ export class UserSession {
 
     public handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
         if (message.isForSkill()) {
-            const alexa = this.virtualAlexa(message.skillUtterance as SkillUtterance);
+            const alexa = this.virtualAlexa(message);
             this.activeSkill = alexa;
             alexa.context().setUserID(this.userID);
             return this.invokeSkill(alexa, message);
@@ -23,6 +23,14 @@ export class UserSession {
 
     private async invokeSkill(alexa: VirtualAlexa, message: SkillBotMessage): Promise<SkillBotReply> {
         let reply;
+        // Set a filter on the VirtualAlexa instance to set data that is useful
+        alexa.filter((request) => {
+            // We add a skillBot object to the request, with the source set on it
+            request.skillbot = {
+                source: message.source,
+            };
+        });
+
         if (message.isForSkill()) {
             const skillUtterance = message.skillUtterance as SkillUtterance;
             const json = skillUtterance.isLaunch()
@@ -48,7 +56,8 @@ export class UserSession {
         return reply;
     }
 
-    private virtualAlexa(skillUtterance: SkillUtterance) {
+    private virtualAlexa(message: SkillBotMessage) {
+        const skillUtterance = message.skillUtterance as SkillUtterance;
         let alexa = this.enginesByID[skillUtterance.skill.id];
         if (!alexa) {
             const builder = VirtualAlexa.Builder();
@@ -61,7 +70,6 @@ export class UserSession {
 
             builder.skillURL(skillUtterance.skill.url);
             alexa = builder.create();
-
             this.enginesByID[skillUtterance.skill.id] = alexa;
         }
         return alexa;

@@ -4,7 +4,7 @@ Alpha
 - [X] Handle session ended repsonses and explicit session ends
 - [ ] add help command and default skill
 - [X] switch skillbot server over to point at prod
-- [ ] add skillbot section to request payloads
+- [X] add skillbot section to request payloads
 - [ ] save all interactions to dynamo? Or Mongo?
     - [ ] add user type to payload
 - [ ] create onboarding flow

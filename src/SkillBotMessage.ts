@@ -4,7 +4,7 @@ import {ISkillConfiguration} from "./ISkillConfiguration";
 export class SkillBotMessage {
     public skillUtterance?: SkillUtterance;
 
-    public constructor(public userID: string, public fullMessage: string) {
+    public constructor(public source: string, public userID: string, public fullMessage: string) {
         this.fullMessage = fullMessage.toLowerCase();
         this.parse();
     }
