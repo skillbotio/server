@@ -13,4 +13,4 @@ deployment:
   dev:
     branch: /.*/
     commands:
-      - ./deployment.sh skillbot-server dev $CIRCLE_BRANCH 209.177.91.119 s3
+      - ./deployment.sh skillbot-server dev $CIRCLE_BRANCH 209.177.91.119 s4
