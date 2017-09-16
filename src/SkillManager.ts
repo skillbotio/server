@@ -7,7 +7,7 @@ export class SkillManager {
     public get(invocationName: string): ISkillConfiguration | undefined {
         let skill;
         if (invocationName.toLowerCase() in this.skills) {
-           skill = this.skills[invocationName];
+           skill = this.skills[invocationName.toLowerCase()];
         }
         return skill;
     }

@@ -12,6 +12,7 @@ Alpha
     - [ ] ask people for their location to get started
 - [ ] Get image for skill to show
 - [ ] Make skill configuration easy
+- [ ] Add CI, code coverage and npm versions to all the repos
 
 AlphaV2
 - [ ] support for flash briefings
@@ -29,6 +30,7 @@ Beta
 - [ ] Make enabling hound optional
 - [ ] Make skill availability either public or private to use
 - [ ] Landing page
+- [ ] Figure out how to prevent people from stomping on each other's skills
 
 V1
 - [ ] Slack submission

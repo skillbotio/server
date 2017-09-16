@@ -1,12 +1,22 @@
 import {VirtualAlexa} from "virtual-alexa";
 import {SkillBotMessage, SkillUtterance} from "./SkillBotMessage";
 import {SkillBotReply} from "./SkillBotReply";
+import {SkillManager} from "./SkillManager";
+import {ISkillConfiguration} from "./ISkillConfiguration";
 
 export class UserSession {
     private activeSkill?: VirtualAlexa;
+    private defaultSkill: VirtualAlexa;
     private enginesByID: {[id: string]: VirtualAlexa} = {};
 
-    public constructor(private userID: string) {}
+    public constructor(private userID: string) {
+        // We instantiate a default skill for each user
+        // This handles everything not directed at a specific skill
+        const skill = SkillManager.Instance.get("Skillbot Default") as ISkillConfiguration;
+        this.defaultSkill = VirtualAlexa.Builder()
+            .interactionModel(skill.interactionModel as any)
+            .skillURL(skill.url as string).create();
+    }
 
     public handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
         if (message.isForSkill()) {
@@ -17,11 +27,13 @@ export class UserSession {
         } else if (this.activeSkill) {
             return this.invokeSkill(this.activeSkill, message);
         } else {
-            return Promise.resolve(new SkillBotReply(message, "No reply for this message"));
+            return this.invokeSkill(this.defaultSkill, message, true);
         }
     }
 
-    private async invokeSkill(alexa: VirtualAlexa, message: SkillBotMessage): Promise<SkillBotReply> {
+    private async invokeSkill(alexa: VirtualAlexa,
+                              message: SkillBotMessage,
+                              defaulted = false): Promise<SkillBotReply> {
         let reply;
         // Set a filter on the VirtualAlexa instance to set data that is useful
         alexa.filter((request) => {
@@ -38,7 +50,7 @@ export class UserSession {
                 : await alexa.utter(skillUtterance.utterance);
             reply = SkillBotReply.alexaResponseToReply(message, json);
 
-        } else if (message.isEndSession()) {
+        } else if (!defaulted && message.isEndSession()) {
             // We do not wait on an end session - no reply is allowed
             alexa.endSession();
             reply = SkillBotReply.sessionEnded(message);
