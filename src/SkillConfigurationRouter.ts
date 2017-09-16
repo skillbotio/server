@@ -51,7 +51,7 @@ export class SkillConfigurationRouter {
                 const secretKey = skillJSON.secretKey;
 
                 if (!source) {
-                    return this.notOkay(response, 404, "Skill not found: " + request.params.skillID);
+                    return this.notOkay(response, 404, "Source not found: " + request.params.sourceID);
                 } else if (source.secretKey !== secretKey) {
                     return this.notOkay(response, 403, "Invalid request - secretKey does not match for skill");
                 }
