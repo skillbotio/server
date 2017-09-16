@@ -13,9 +13,11 @@ export class UserSession {
         // We instantiate a default skill for each user
         // This handles everything not directed at a specific skill
         const skill = SkillManager.Instance.get("Skillbot Default") as ISkillConfiguration;
-        this.defaultSkill = VirtualAlexa.Builder()
-            .interactionModel(skill.interactionModel as any)
-            .skillURL(skill.url as string).create();
+        if (skill) {
+            this.defaultSkill = VirtualAlexa.Builder()
+                .interactionModel(skill.interactionModel as any)
+                .skillURL(skill.url as string).create();
+        }
     }
 
     public handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
@@ -26,8 +28,10 @@ export class UserSession {
             return this.invokeSkill(alexa, message);
         } else if (this.activeSkill) {
             return this.invokeSkill(this.activeSkill, message);
-        } else {
+        } else if (this.defaultSkill) {
             return this.invokeSkill(this.defaultSkill, message, true);
+        } else {
+            throw new Error("This should not happen - no default configured and no matching skill");
         }
     }
 
