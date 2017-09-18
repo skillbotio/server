@@ -1,6 +1,6 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
-import {DataStore} from "./DataStore";
+import {DataStore} from "./SkillDataStore";
 import {ISkillConfiguration} from "./ISkillConfiguration";
 
 export class SkillConfigurationRouter {

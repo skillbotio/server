@@ -1,14 +1,14 @@
 import {ISkillConfiguration} from "./ISkillConfiguration";
 
-export class DataStore {
+export class SkillDataStore {
     private static admin: any;
     private database: any;
 
     public constructor() {
         // admin is a static variable that is only mean to be initialized once
         // If we configure it more than once, we get an error
-        if (!DataStore.admin) {
-            DataStore.admin = require("firebase-admin");
+        if (!SkillDataStore.admin) {
+            SkillDataStore.admin = require("firebase-admin");
             const projectId = process.env.FIREBASE_PROJECT_ID;
             const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
             let privateKey = process.env.FIREBASE_PRIVATE_KEY as string;
@@ -16,8 +16,8 @@ export class DataStore {
 
             privateKey = privateKey.replace(/\\n/g, "\n");
 
-            DataStore.admin.initializeApp({
-                credential: DataStore.admin.credential.cert({
+            SkillDataStore.admin.initializeApp({
+                credential: SkillDataStore.admin.credential.cert({
                     clientEmail,
                     privateKey,
                     projectId,
@@ -27,8 +27,8 @@ export class DataStore {
         }
     }
 
-    public initialize(): DataStore {
-        this.database = DataStore.admin.database();
+    public initialize(): SkillDataStore {
+        this.database = SkillDataStore.admin.database();
         return this;
     }
 

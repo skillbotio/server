@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import {DataStore} from "./DataStore";
+import {DataStore} from "./SkillDataStore";
 import {ISkillConfiguration} from "./ISkillConfiguration";
 import {SkillManager} from "./SkillManager";
 

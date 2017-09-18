@@ -1,16 +1,16 @@
 import {assert} from "chai";
-import {DataStore} from "../src/DataStore";
 import {ISkillConfiguration} from "../src/ISkillConfiguration";
+import {SkillDataStore} from "../src/SkillDataStore";
 
 require("dotenv").config();
 
-describe("DataStore Test", function() {
+describe("SkillDataStore Test", function() {
     this.timeout(10000);
 
     describe("#initialize()", () => {
         it("Initializes succesfully", async () => {
             try {
-                const ds = await new DataStore().initialize();
+                const ds = await new SkillDataStore().initialize();
                 assert.isDefined(ds);
             } catch (e) {
                 console.log(e);
@@ -21,7 +21,7 @@ describe("DataStore Test", function() {
 
     describe("#saveSkill()", () => {
         it("Saves and fetches a record", async () => {
-            const ds = new DataStore().initialize();
+            const ds = new SkillDataStore().initialize();
             const skill: ISkillConfiguration = {
                 id: "testID",
                 interactionModel: { model: true },
@@ -41,14 +41,14 @@ describe("DataStore Test", function() {
 
     describe("#findSkill()", () => {
         it("Find a record", async () => {
-            const ds = new DataStore().initialize();
+            const ds = new SkillDataStore().initialize();
             const savedSkill = await ds.findSkill("testID") as ISkillConfiguration;
             assert.equal(savedSkill.name, "test skill");
             assert.isTrue(savedSkill.interactionModel.model);
         });
 
         it("Cannot find a record", async () => {
-            const ds = new DataStore().initialize();
+            const ds = new SkillDataStore().initialize();
             const savedSkill = await ds.findSkill("testIDDoesNotExist") as ISkillConfiguration;
             assert.isUndefined(savedSkill);
         });
@@ -56,7 +56,7 @@ describe("DataStore Test", function() {
 
     describe("#findSkills()", () => {
         it("Finds skills", async () => {
-            const ds = new DataStore().initialize();
+            const ds = new SkillDataStore().initialize();
             const savedSkills = await ds.findSkills() as any;
             assert.isTrue(Object.keys(savedSkills).length >= 1);
         });

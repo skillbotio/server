@@ -2,17 +2,23 @@ Alpha
 - [X] Handle slots better on Alexa skills
 - [X] Remote skill loader
 - [X] Handle session ended repsonses and explicit session ends
-- [ ] add help command and default skill
+- [X] add help command and default skill
 - [X] switch skillbot server over to point at prod
 - [X] add skillbot section to request payloads
 - [ ] save all interactions to dynamo? Or Mongo?
     - [ ] add user type to payload
+- [ ] Deploy skillbot
 - [ ] create onboarding flow
     - [ ] support device location permission
     - [ ] ask people for their location to get started
 - [ ] Get image for skill to show
 - [ ] Make skill configuration easy
+    - [ ] Automatically configure source
+    - [ ] Automatically toggle between spoke and proxy
 - [ ] Add CI, code coverage and npm versions to all the repos
+- [ ] Add directions
+    - [ ] For configuring live skill
+    - [ ] For configuring with Proxy
 
 AlphaV2
 - [ ] support for flash briefings
