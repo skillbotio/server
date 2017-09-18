@@ -1,13 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
-import {DataStore} from "./SkillDataStore";
 import {ISkillConfiguration} from "./ISkillConfiguration";
+import {SkillDataStore} from "./SkillDataStore";
 import {SkillManager} from "./SkillManager";
 
 export class SkillLoader {
 
     public static async loadAll(): Promise<void> {
-        const ds = new DataStore().initialize();
+        const ds = new SkillDataStore().initialize();
         const skills: {[id: string]: ISkillConfiguration} = await ds.findSkills();
         for (const skillName of Object.keys(skills)) {
             SkillManager.Instance.put(skills[skillName]);

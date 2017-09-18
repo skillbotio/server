@@ -10,12 +10,8 @@ export class MessageDataStore {
         return this;
     }
 
-    public async saveUser(user: IUser) {
-        try {
-            await userModel.create(user);
-        } catch (e) {
-            console.log(e);
-        }
+    public async saveUser(user: IUser): Promise<IUser> {
+        return await userModel.create(user);
     }
 
     public async findUserByID(source: string, userID: string): Promise<IUser | undefined> {
@@ -26,13 +22,39 @@ export class MessageDataStore {
             return undefined;
         }
     }
+
+    public async saveMessage(message: IMessage): Promise<IMessage> {
+        return await messageModel.create(message);
+    }
+
+    public async findMessageByID(messageID: string): Promise<IMessage> {
+        return await messageModel.findById(messageID) as IMessage;
+    }
 }
 
-export interface IUser extends mongoose.Document {
-    userID: string;
-    source: string;
+// Below here is all our mongo schema stuff
+
+// Validation function for saving timestamps on objects - used for IMessage and IUser
+const prevalidate = function(next: () => void) {
+    if (this._doc) {
+        const doc = this._doc as IModel;
+        const now = new Date();
+        if (!doc.createdAt) {
+            doc.createdAt = now;
+        }
+        doc.modifiedAt = now;
+    }
+    next();
+};
+
+export interface IModel extends mongoose.Document {
     createdAt?: Date;
     modifiedAt?: Date;
+}
+
+export interface IUser extends IModel {
+    userID: string;
+    source: string;
 }
 
 const userSchema = new mongoose.Schema({
@@ -54,16 +76,43 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-userSchema.pre("validate", function(next) {
-    if (this._doc) {
-        const doc = this._doc as IUser;
-        const now = new Date();
-        if (!doc.createdAt) {
-            doc.createdAt = now;
-        }
-        doc.modifiedAt = now;
-    }
-    next();
-});
+userSchema.pre("validate", prevalidate);
 
 const userModel = mongoose.model<IUser>("user", userSchema, "users", true);
+
+export interface IMessage extends IModel {
+    userID: string;
+    source: string;
+    message: string;
+}
+
+const messageSchema = new mongoose.Schema({
+    createdAt: {
+        required: true,
+        type: Date,
+    },
+    message: {
+        required: true,
+        type: String,
+    },
+    modifiedAt: {
+        required: true,
+        type: Date,
+    },
+    reply: {
+        required: false,
+        type: Object,
+    },
+    source: {
+        required: true,
+        type: String,
+    },
+    userID: {
+        required: true,
+        type: String,
+    },
+});
+
+messageSchema.pre("validate", prevalidate);
+
+const messageModel = mongoose.model<IMessage>("message", userSchema, "messages", true);
