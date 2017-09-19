@@ -2,12 +2,11 @@ import * as mongoose from "mongoose";
 
 // Saves records to mongo
 export class MessageDataStore {
-    public async connect(): Promise<MessageDataStore> {
+    public static async initialize(): Promise<void> {
         const uri = process.env.MONGO_URL as string;
         // We use a require here because otherwise we get an error trying to do this assignment to mongoose.Promise
         require("mongoose").Promise = global.Promise;
-        await mongoose.connect(uri, { useMongoClient: true});
-        return this;
+        return await mongoose.connect(uri, { useMongoClient: true});
     }
 
     public async saveUser(user: IUser): Promise<IUser> {

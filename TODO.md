@@ -5,8 +5,8 @@ Alpha
 - [X] add help command and default skill
 - [X] switch skillbot server over to point at prod
 - [X] add skillbot section to request payloads
-- [ ] save all interactions to dynamo? Or Mongo?
-    - [ ] add user type to payload
+- [X] save all interactions to dynamo? Or Mongo?
+    - [X] add user type to payload
 - [ ] Deploy skillbot
 - [ ] create onboarding flow
     - [ ] support device location permission

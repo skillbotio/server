@@ -3,13 +3,17 @@ import {IMessage, IUser, MessageDataStore} from "../src/MessageDataStore";
 
 require("dotenv").config();
 
-describe("SkillDataStore Test", function() {
+describe("MessageDataStore Test", function() {
     this.timeout(10000);
+
+    beforeEach(async () => {
+        await MessageDataStore.initialize();
+    });
 
     describe("#connect()", () => {
         it("Connect succesfully", async () => {
             try {
-                await new MessageDataStore().connect();
+                await MessageDataStore.initialize();
             } catch (e) {
                 console.log(e);
                 assert.fail(e);
@@ -19,7 +23,7 @@ describe("SkillDataStore Test", function() {
 
     describe("#saveUser()", () => {
         it("Saves and fetches a user", async () => {
-            const ds = await new MessageDataStore().connect();
+            const ds = new MessageDataStore();
             const user = {
                 source: "UNIT_TEST",
                 userID: "userID",
@@ -35,7 +39,7 @@ describe("SkillDataStore Test", function() {
 
     describe("#fetchUser()", () => {
         it("Fetches a user that does not exist", async () => {
-            const ds = await new MessageDataStore().connect();
+            const ds = new MessageDataStore();
             const savedUser = await ds.findUserByID("UNIT_TEST", "userIDDoesNotExistForReal") as IUser;
             assert.isUndefined(savedUser);
         });
@@ -43,7 +47,7 @@ describe("SkillDataStore Test", function() {
 
     describe("#saveMessage()", () => {
         it("Saves and fetches a message", async () => {
-            const ds = await new MessageDataStore().connect();
+            const ds = new MessageDataStore();
             let message = {
                 message: "testMessage",
                 reply: { test: "test" },

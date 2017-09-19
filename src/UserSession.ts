@@ -3,9 +3,11 @@ import {SkillBotMessage, SkillUtterance} from "./SkillBotMessage";
 import {SkillBotReply} from "./SkillBotReply";
 import {SkillManager} from "./SkillManager";
 import {ISkillConfiguration} from "./ISkillConfiguration";
+import {IMessage, MessageDataStore} from "./MessageDataStore";
 
 export class UserSession {
     private activeSkill?: VirtualAlexa;
+    private dataStore: MessageDataStore;
     private defaultSkill: VirtualAlexa;
     private enginesByID: {[id: string]: VirtualAlexa} = {};
 
@@ -13,6 +15,7 @@ export class UserSession {
         // We instantiate a default skill for each user
         // This handles everything not directed at a specific skill
         const skill = SkillManager.Instance.get("Skillbot Default") as ISkillConfiguration;
+        this.dataStore = new MessageDataStore();
         if (skill) {
             this.defaultSkill = VirtualAlexa.Builder()
                 .interactionModel(skill.interactionModel as any)
@@ -69,7 +72,19 @@ export class UserSession {
             this.activeSkill = undefined;
         }
 
+        // We do NOT do an await here - just fire this async
+        this.saveMessage(message, reply);
         return reply;
+    }
+
+    private saveMessage(message: SkillBotMessage, reply: any): Promise<IMessage> {
+        const messageModel: any = {
+            message: message.fullMessage,
+            reply,
+            source: message.source,
+            userID: message.userID,
+        };
+        return this.dataStore.saveMessage(messageModel);
     }
 
     private virtualAlexa(message: SkillBotMessage) {
