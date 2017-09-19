@@ -30,7 +30,6 @@ describe("SkillDataStore Test", function() {
             // assert.isDefined(savedUser._id);
             assert.equal(savedUser.userID, "userID");
             assert.isDefined(savedUser.createdAt);
-            assert.isDefined(savedUser.modifiedAt);
         });
     });
 
@@ -47,16 +46,17 @@ describe("SkillDataStore Test", function() {
             const ds = await new MessageDataStore().connect();
             let message = {
                 message: "testMessage",
+                reply: { test: "test" },
                 source: "UNIT_TEST",
-                userID: "userID",
+                userID: "userID2",
             } as any;
 
             message = await ds.saveMessage(message);
             const savedMessage = await ds.findMessageByID(message._id) as IMessage;
             // assert.isDefined(savedUser._id);
-            assert.equal(savedMessage.userID, "userID");
+            assert.equal(savedMessage.userID, "userID2");
+            assert.equal(savedMessage.reply.test, "test");
             assert.isDefined(savedMessage.createdAt);
-            assert.isDefined(savedMessage.modifiedAt);
         });
     });
 });

@@ -11,7 +11,12 @@ export class MessageDataStore {
     }
 
     public async saveUser(user: IUser): Promise<IUser> {
-        return await userModel.create(user);
+        const savedUser = await this.findUserByID(user.source, user.userID);
+        if (savedUser) {
+            return await userModel.update({ source: user.source, userID: user.userID }, user);
+        } else {
+            return await userModel.create(user);
+        }
     }
 
     public async findUserByID(source: string, userID: string): Promise<IUser | undefined> {
@@ -34,7 +39,7 @@ export class MessageDataStore {
 
 // Below here is all our mongo schema stuff
 
-// Validation function for saving timestamps on objects - used for IMessage and IUser
+// Validation function for saving created timestamp on objects - used for IMessage and IUser
 const prevalidate = function(next: () => void) {
     if (this._doc) {
         const doc = this._doc as IModel;
@@ -42,14 +47,12 @@ const prevalidate = function(next: () => void) {
         if (!doc.createdAt) {
             doc.createdAt = now;
         }
-        doc.modifiedAt = now;
     }
     next();
 };
 
 export interface IModel extends mongoose.Document {
     createdAt?: Date;
-    modifiedAt?: Date;
 }
 
 export interface IUser extends IModel {
@@ -59,10 +62,6 @@ export interface IUser extends IModel {
 
 const userSchema = new mongoose.Schema({
     createdAt: {
-        required: true,
-        type: Date,
-    },
-    modifiedAt: {
         required: true,
         type: Date,
     },
@@ -84,6 +83,7 @@ export interface IMessage extends IModel {
     userID: string;
     source: string;
     message: string;
+    reply: any;
 }
 
 const messageSchema = new mongoose.Schema({
@@ -94,10 +94,6 @@ const messageSchema = new mongoose.Schema({
     message: {
         required: true,
         type: String,
-    },
-    modifiedAt: {
-        required: true,
-        type: Date,
     },
     reply: {
         required: false,
@@ -115,4 +111,4 @@ const messageSchema = new mongoose.Schema({
 
 messageSchema.pre("validate", prevalidate);
 
-const messageModel = mongoose.model<IMessage>("message", userSchema, "messages", true);
+const messageModel = mongoose.model<IMessage>("message", messageSchema, "messages", true);
