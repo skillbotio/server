@@ -73,7 +73,9 @@ export class UserSession {
         }
 
         // We do NOT do an await here - just fire this async
-        this.saveMessage(message, reply);
+        this.saveMessage(message, reply).then(() => {
+            console.log("Message saved");
+        });
         return reply;
     }
 

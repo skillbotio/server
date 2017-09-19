@@ -2,6 +2,7 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as https from "https";
 import * as net from "net";
+import {MessageDataStore} from "./MessageDataStore";
 import {SimpleRestRouter} from "./SimpleRestRouter";
 import {SkillConfigurationRouter} from "./SkillConfigurationRouter";
 import {SkillLoader} from "./SkillLoader";
@@ -28,6 +29,9 @@ export class SkillBotServer {
 
         // This grabs all the skills we know about from the data store
         SkillLoader.loadAll();
+
+        // Initialize message data store
+        MessageDataStore.initialize();
 
         if (!forceNoSSL && process.env.SSL_CERT) {
             const cert = process.env.SSL_CERT as string;
