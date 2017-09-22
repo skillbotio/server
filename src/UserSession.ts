@@ -1,6 +1,6 @@
 import {VirtualAlexa} from "virtual-alexa";
 import {ISkillConfiguration} from "./ISkillConfiguration";
-import {IMessage, IUser, MessageDataStore} from "./MessageDataStore";
+import {IMessage, MessageDataStore} from "./MessageDataStore";
 import {SkillBotMessage, SkillUtterance} from "./SkillBotMessage";
 import {SkillBotReply} from "./SkillBotReply";
 import {SkillManager} from "./SkillManager";
@@ -77,12 +77,9 @@ export class UserSession {
             console.log("Message saved");
         });
 
-        // Save the user - we also do this async
+        // Save the user - we do this partially async - we wait on looking up the user, then do the rest async
         // Either inserts or updates the user, with attributes from payload
-        const user: any = await this.dataStore.findUserByID(message.source, message.userID);
-        this.updateUser(user, message, reply).then(() => {
-            console.log("User saved");
-        });
+        await this.saveUser(message, reply);
 
         return reply;
     }
@@ -99,24 +96,30 @@ export class UserSession {
 
     // Check if the skill returns data we want to save with the user
     //  We automatically store any data coming back on sessionAttributes.user in the response
-    private async updateUser(user: IUser, message: SkillBotMessage, reply: any): Promise<void> {
+    private async saveUser(message: SkillBotMessage, reply: any): Promise<void> {
+        let user: any = await this.dataStore.findUserByID(message.source, message.userID);
+
+        if (!user) {
+            user = {
+                attributes: {},
+                source: message.source,
+                userID: message.userID,
+            } as any;
+        }
+
         const sessionAttributes = reply.raw.response.sessionAttributes;
         if (sessionAttributes && sessionAttributes.user) {
-            if (!user) {
-                user = {
-                    attributes: {},
-                    source: message.source,
-                    userID: message.userID,
-                } as any;
-            }
             const userData = sessionAttributes.user;
             for (const userAttribute of Object.keys(userData)) {
                 const value = userData[userAttribute];
                 user.attributes[userAttribute] = value;
             }
-
-            await this.dataStore.saveUser(user);
         }
+
+        // We do not wait on the actual save user call
+        this.dataStore.saveUser(user).then(() =>  {
+            console.log("Saved user");
+        });
         return Promise.resolve();
     }
 
