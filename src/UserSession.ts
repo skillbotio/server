@@ -1,9 +1,9 @@
 import {VirtualAlexa} from "virtual-alexa";
+import {ISkillConfiguration} from "./ISkillConfiguration";
+import {IMessage, IUser, MessageDataStore} from "./MessageDataStore";
 import {SkillBotMessage, SkillUtterance} from "./SkillBotMessage";
 import {SkillBotReply} from "./SkillBotReply";
 import {SkillManager} from "./SkillManager";
-import {ISkillConfiguration} from "./ISkillConfiguration";
-import {IMessage, MessageDataStore} from "./MessageDataStore";
 
 export class UserSession {
     private activeSkill?: VirtualAlexa;
@@ -72,10 +72,18 @@ export class UserSession {
             this.activeSkill = undefined;
         }
 
-        // We do NOT do an await here - just fire this async
+        // Save the message - we do this async
         this.saveMessage(message, reply).then(() => {
             console.log("Message saved");
         });
+
+        // Save the user - we also do this async
+        // Either inserts or updates the user, with attributes from payload
+        const user: any = await this.dataStore.findUserByID(message.source, message.userID);
+        this.updateUser(user, message, reply).then(() => {
+            console.log("User saved");
+        });
+
         return reply;
     }
 
@@ -87,6 +95,29 @@ export class UserSession {
             userID: message.userID,
         };
         return this.dataStore.saveMessage(messageModel);
+    }
+
+    // Check if the skill returns data we want to save with the user
+    //  We automatically store any data coming back on sessionAttributes.user in the response
+    private async updateUser(user: IUser, message: SkillBotMessage, reply: any): Promise<void> {
+        const sessionAttributes = reply.raw.response.sessionAttributes;
+        if (sessionAttributes && sessionAttributes.user) {
+            if (!user) {
+                user = {
+                    attributes: {},
+                    source: message.source,
+                    userID: message.userID,
+                } as any;
+            }
+            const userData = sessionAttributes.user;
+            for (const userAttribute of Object.keys(userData)) {
+                const value = userData[userAttribute];
+                user.attributes[userAttribute] = value;
+            }
+
+            await this.dataStore.saveUser(user);
+        }
+        return Promise.resolve();
     }
 
     private virtualAlexa(message: SkillBotMessage) {

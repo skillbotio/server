@@ -10,8 +10,8 @@ export class MessageDataStore {
     }
 
     public async saveUser(user: IUser): Promise<IUser> {
-        const savedUser = await this.findUserByID(user.source, user.userID);
-        if (savedUser) {
+        // If the id is set, means this is an existing document
+        if (user._id) {
             return await userModel.update({ source: user.source, userID: user.userID }, user);
         } else {
             return await userModel.create(user);
@@ -57,9 +57,14 @@ export interface IModel extends mongoose.Document {
 export interface IUser extends IModel {
     userID: string;
     source: string;
+    attributes: {[id: string]: string};
 }
 
 const userSchema = new mongoose.Schema({
+    attributes: {
+        required: true,
+        type: Object,
+    },
     createdAt: {
         required: true,
         type: Date,
