@@ -41,6 +41,12 @@ export class UserSession {
     private async invokeSkill(alexa: VirtualAlexa,
                               message: SkillBotMessage,
                               defaulted = false): Promise<SkillBotReply> {
+        const user: any = await this.dataStore.findUserByID(message.source, message.userID);
+        let onboarding = false;
+        if (!user || !user.attributes.postalCode) {
+            onboarding = true;
+        }
+
         let reply;
         // Set a filter on the VirtualAlexa instance to set data that is useful
         alexa.filter((request) => {
@@ -48,6 +54,10 @@ export class UserSession {
             request.skillbot = {
                 source: message.source,
             };
+
+            if (onboarding) {
+                request.skillbot.onboarding = true;
+            }
         });
 
         if (message.isForSkill()) {
@@ -77,9 +87,11 @@ export class UserSession {
             console.log("Message saved");
         });
 
-        // Save the user - we do this partially async - we wait on looking up the user, then do the rest async
+        // Save the user - we do async
         // Either inserts or updates the user, with attributes from payload
-        await this.saveUser(message, reply);
+        this.saveUser(user, message, reply).then(() =>  {
+            console.log("Saved user");
+        });
 
         return reply;
     }
@@ -96,9 +108,7 @@ export class UserSession {
 
     // Check if the skill returns data we want to save with the user
     //  We automatically store any data coming back on sessionAttributes.user in the response
-    private async saveUser(message: SkillBotMessage, reply: any): Promise<void> {
-        let user: any = await this.dataStore.findUserByID(message.source, message.userID);
-
+    private async saveUser(user: any, message: SkillBotMessage, reply: any): Promise<void> {
         if (!user) {
             user = {
                 attributes: {},
@@ -119,11 +129,8 @@ export class UserSession {
             }
         }
 
-
         // We do not wait on the actual save user call
-        this.dataStore.saveUser(user).then(() =>  {
-            console.log("Saved user");
-        });
+        await this.dataStore.saveUser(user);
         return Promise.resolve();
     }
 
