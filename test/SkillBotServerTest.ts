@@ -2,9 +2,9 @@ import {assert} from "chai";
 import * as nock from "nock";
 import * as request from "request-promise-native";
 import {ISkillConfiguration} from "../src/ISkillConfiguration";
+import {IUser, MessageDataStore} from "../src/MessageDataStore";
 import {SkillBotServer} from "../src/SkillBotServer";
 import {SkillManager} from "../src/SkillManager";
-import {IUser, MessageDataStore} from "../src/MessageDataStore";
 
 const interactionModel = {
     intents: [
@@ -39,6 +39,7 @@ describe("SkillBot End-to-End Tests", function() {
 
         const skill: ISkillConfiguration = {
             id: "testID",
+            imageURL: "https://bespoken.io/wp-content/uploads/Bespoken-Alpaca-Web-720x720-2-e1501010481243.png",
             interactionModel,
             invocationName: "skillbot test",
             name: "test skill",
@@ -97,7 +98,8 @@ describe("SkillBot End-to-End Tests", function() {
             assert.equal(reply.card.content, "My TextField");
             assert.equal(reply.card.title, "My Title");
             assert.equal(reply.card.imageURL, "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg");
-
+            assert.equal(reply.skill.name, "test skill");
+            assert.isDefined(reply.skill.imageURL);
             // Check the session data was saved
             const ds = new MessageDataStore();
 

@@ -48,6 +48,13 @@ export class SkillBotReply {
             reply.sessionEnded = true;
         }
 
+        if (message.skillUtterance) {
+            reply.skill = {
+                imageURL: message.skillUtterance.skill.imageURL,
+                name: message.skillUtterance.skill.name,
+            };
+        }
+
         reply.raw = response;
         return reply;
     }
@@ -73,6 +80,10 @@ export class SkillBotReply {
     public sessionEnded: boolean = false;
     public card?: ISkillBotCard;
     public raw: any;
+    public skill?: {
+        name: string;
+        imageURL?: string;
+    };
     public streamURL: string;
     public text: string;
 

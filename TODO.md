@@ -32,6 +32,9 @@ AlphaV2
     - [ ] Instructions on how to limit access to a particular lambda
     - [ ] lock down spokes
 - [ ] clean up payloads
+- [ ] Make ssml cleaner more robust - allow for escaping \> \<
+- [X] Remove houndify
+- [ ] Rename router, pull in message handler to it
 
 AlphaV3
 - [ ] support for flash briefings

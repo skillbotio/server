@@ -1,5 +1,6 @@
 export interface ISkillConfiguration {
     id: string;
+    imageURL?: string;
     intentSchema?: any;
     interactionModel?: any;
     invocationName: string;
