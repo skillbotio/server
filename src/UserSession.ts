@@ -107,14 +107,18 @@ export class UserSession {
             } as any;
         }
 
-        const sessionAttributes = reply.raw.response.sessionAttributes;
-        if (sessionAttributes && sessionAttributes.user) {
-            const userData = sessionAttributes.user;
-            for (const userAttribute of Object.keys(userData)) {
-                const value = userData[userAttribute];
-                user.attributes[userAttribute] = value;
+        // If we have the reply JSON
+        if (reply.raw) {
+            const sessionAttributes = reply.raw.response.sessionAttributes;
+            if (sessionAttributes && sessionAttributes.user) {
+                const userData = sessionAttributes.user;
+                for (const userAttribute of Object.keys(userData)) {
+                    const value = userData[userAttribute];
+                    user.attributes[userAttribute] = value;
+                }
             }
         }
+
 
         // We do not wait on the actual save user call
         this.dataStore.saveUser(user).then(() =>  {

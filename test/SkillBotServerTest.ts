@@ -112,7 +112,7 @@ describe("SkillBot End-to-End Tests", function() {
             const skill: ISkillConfiguration = {
                 id: "testID",
                 interactionModel,
-                invocationName: "test",
+                invocationName: "skillbot test",
                 name: "test skill",
                 secretKey: "testSecretKey",
                 sourceID: "testSourceID",
@@ -153,7 +153,7 @@ describe("SkillBot End-to-End Tests", function() {
             const options = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=ask skillbot test play",
             };
 
             let reply = await request(options);
@@ -180,7 +180,7 @@ describe("SkillBot End-to-End Tests", function() {
             const skill: ISkillConfiguration = {
                 id: "testID",
                 interactionModel,
-                invocationName: "test",
+                invocationName: "skillbot test",
                 name: "test skill",
                 secretKey: "testSecretKey",
                 sourceID: "testSourceID",
@@ -192,7 +192,6 @@ describe("SkillBot End-to-End Tests", function() {
             // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
                 .post("/fake_url")
-                .times(2)
                 .reply(200, {
                     response: {
                         card: {
@@ -221,7 +220,7 @@ describe("SkillBot End-to-End Tests", function() {
             const options = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=ask test play",
+                uri: "http://localhost:3001/message?userID=JPK&utterance=ask skillbot test play",
             };
 
             let reply = await request(options);

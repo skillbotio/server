@@ -25,6 +25,7 @@ describe("MessageDataStore Test", function() {
         it("Saves and fetches a user", async () => {
             const ds = new MessageDataStore();
             const user = {
+                attributes: {},
                 source: "UNIT_TEST",
                 userID: "userID",
             } as any;
