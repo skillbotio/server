@@ -43,7 +43,7 @@ export class UserSession {
                               defaulted = false): Promise<SkillBotReply> {
         const user: any = await this.dataStore.findUserByID(message.source, message.userID);
         let onboarding = false;
-        if (!user || !user.attributes.postalCode) {
+        if (!user || !user.attributes || !user.attributes.postalCode) {
             onboarding = true;
         }
 
@@ -119,7 +119,7 @@ export class UserSession {
 
         // If we have the reply JSON
         if (reply.raw) {
-            const sessionAttributes = reply.raw.response.sessionAttributes;
+            const sessionAttributes = reply.raw.sessionAttributes;
             if (sessionAttributes && sessionAttributes.user) {
                 const userData = sessionAttributes.user;
                 for (const userAttribute of Object.keys(userData)) {

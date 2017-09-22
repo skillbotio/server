@@ -76,11 +76,11 @@ describe("SkillBot End-to-End Tests", function() {
                             ssml: "<speak> Hi </speak>",
                             type: "SSML",
                         },
-                        sessionAttributes: {
-                            user: {
-                                userProperty: "test",
-                                userPropertyBoolean: true,
-                            },
+                    },
+                    sessionAttributes: {
+                        user: {
+                            userProperty: "test",
+                            userPropertyBoolean: true,
                         },
                     },
                 });

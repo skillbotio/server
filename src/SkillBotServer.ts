@@ -28,7 +28,7 @@ export class SkillBotServer {
         app.use(new SkillConfigurationRouter().router());
 
         // This grabs all the skills we know about from the data store
-        SkillLoader.loadAll();
+        await SkillLoader.loadAll();
 
         // Initialize message data store
         MessageDataStore.initialize();

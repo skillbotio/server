@@ -61,23 +61,24 @@ export interface IUser extends IModel {
 }
 
 const userSchema = new mongoose.Schema({
-    attributes: {
-        required: true,
-        type: Object,
+        attributes: {
+            required: true,
+            type: Object,
+        },
+        createdAt: {
+            required: true,
+            type: Date,
+        },
+        source: {
+            required: true,
+            type: String,
+        },
+        userID: {
+            required: true,
+            type: String,
+        },
     },
-    createdAt: {
-        required: true,
-        type: Date,
-    },
-    source: {
-        required: true,
-        type: String,
-    },
-    userID: {
-        required: true,
-        type: String,
-    },
-});
+    { minimize: false }); // This forces mongo to save empty objects;
 
 userSchema.pre("validate", prevalidate);
 
@@ -91,27 +92,28 @@ export interface IMessage extends IModel {
 }
 
 const messageSchema = new mongoose.Schema({
-    createdAt: {
-        required: true,
-        type: Date,
+        createdAt: {
+            required: true,
+            type: Date,
+        },
+        message: {
+            required: true,
+            type: String,
+        },
+        reply: {
+            required: false,
+            type: Object,
+        },
+        source: {
+            required: true,
+            type: String,
+        },
+        userID: {
+            required: true,
+            type: String,
+        },
     },
-    message: {
-        required: true,
-        type: String,
-    },
-    reply: {
-        required: false,
-        type: Object,
-    },
-    source: {
-        required: true,
-        type: String,
-    },
-    userID: {
-        required: true,
-        type: String,
-    },
-});
+    { minimize: false }); // This forces mongo to save empty objects);
 
 messageSchema.pre("validate", prevalidate);
 
