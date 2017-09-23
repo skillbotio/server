@@ -5,6 +5,7 @@
     "max-classes-per-file": 3,
     "no-console": false,
     "no-var-requires": false,
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
   }
 }

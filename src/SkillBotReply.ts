@@ -1,7 +1,10 @@
+import {ISkillConfiguration} from "./ISkillConfiguration";
 import {SkillBotMessage} from "./SkillBotMessage";
 
 export class SkillBotReply {
-    public static alexaResponseToReply(message: SkillBotMessage, response: any): SkillBotReply {
+    public static alexaResponseToReply(skill: ISkillConfiguration,
+                                       message: SkillBotMessage,
+                                       response: any): SkillBotReply {
         const reply = new SkillBotReply(message);
         const outputSpeech = response.response && response.response.outputSpeech;
         let isAudio = false;
@@ -48,10 +51,10 @@ export class SkillBotReply {
             reply.sessionEnded = true;
         }
 
-        if (message.skillUtterance) {
+        if (skill) {
             reply.skill = {
-                imageURL: message.skillUtterance.skill.imageURL,
-                name: message.skillUtterance.skill.name,
+                imageURL: skill.imageURL,
+                name: skill.name,
             };
         }
 

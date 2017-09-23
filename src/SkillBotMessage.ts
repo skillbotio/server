@@ -9,7 +9,7 @@ export class SkillBotMessage {
         this.parse();
     }
 
-    public isForSkill(): boolean {
+    public addressesSkill(): boolean {
         return (this.skillUtterance !== undefined);
     }
 

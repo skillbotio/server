@@ -6,9 +6,9 @@ import {SkillBotReply} from "./SkillBotReply";
 import {SkillManager} from "./SkillManager";
 
 export class UserSession {
-    private activeSkill?: VirtualAlexa;
+    private _activeSkill?: SkillHolder;
     private dataStore: MessageDataStore;
-    private defaultSkill: VirtualAlexa;
+    private defaultSkill: SkillHolder;
 
     public constructor(private userID: string) {
         // We instantiate a default skill for each user
@@ -16,20 +16,21 @@ export class UserSession {
         const skill = SkillManager.Instance.get("Skillbot Default") as ISkillConfiguration;
         this.dataStore = new MessageDataStore();
         if (skill) {
-            this.defaultSkill = VirtualAlexa.Builder()
+            const defaultAlexa = VirtualAlexa.Builder()
                 .interactionModel(skill.interactionModel as any)
                 .skillURL(skill.url as string).create();
+            this.defaultSkill = new SkillHolder(skill, defaultAlexa);
         }
     }
 
     public handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
-        if (message.isForSkill()) {
-            const alexa = this.virtualAlexa(message);
-            alexa.context().setUserID(this.userID);
-            return this.invokeSkill(alexa, message);
+        if (message.addressesSkill()) {
+            const skill = this.activeSkill(message);
+            skill.virtualAlexa.context().setUserID(this.userID);
+            return this.invokeSkill(skill, message);
 
-        } else if (this.activeSkill) {
-            return this.invokeSkill(this.activeSkill, message);
+        } else if (this._activeSkill) {
+            return this.invokeSkill(this._activeSkill, message);
 
         } else if (this.defaultSkill) {
             return this.invokeSkill(this.defaultSkill, message, true);
@@ -39,7 +40,7 @@ export class UserSession {
         }
     }
 
-    private async invokeSkill(alexa: VirtualAlexa,
+    private async invokeSkill(skill: SkillHolder,
                               message: SkillBotMessage,
                               defaulted = false): Promise<SkillBotReply> {
         const user: any = await this.dataStore.findUserByID(message.source, message.userID);
@@ -50,7 +51,7 @@ export class UserSession {
 
         let reply;
         // Set a filter on the VirtualAlexa instance to set data that is useful
-        alexa.filter((request) => {
+        skill.virtualAlexa.filter((request) => {
             // We add a skillBot object to the request, with the source set on it
             request.skillbot = {
                 source: message.source,
@@ -61,26 +62,26 @@ export class UserSession {
             }
         });
 
-        if (message.isForSkill()) {
+        if (message.addressesSkill()) {
             const skillUtterance = message.skillUtterance as SkillUtterance;
             const json = skillUtterance.isLaunch()
-                ? await alexa.launch()
-                : await alexa.utter(skillUtterance.utterance);
-            reply = SkillBotReply.alexaResponseToReply(message, json);
+                ? await skill.virtualAlexa.launch()
+                : await skill.virtualAlexa.utter(skillUtterance.utterance);
+            reply = SkillBotReply.alexaResponseToReply(skill.skill, message, json);
 
         } else if (!defaulted && message.isEndSession()) {
             // We do not wait on an end session - no reply is allowed
-            alexa.endSession();
+            skill.virtualAlexa.endSession();
             reply = SkillBotReply.sessionEnded(message);
 
         } else {
-            const json = await alexa.utter(message.fullMessage);
-            reply = SkillBotReply.alexaResponseToReply(message, json);
+            const json = await skill.virtualAlexa.utter(message.fullMessage);
+            reply = SkillBotReply.alexaResponseToReply(skill.skill, message, json);
 
         }
 
         if (reply.sessionEnded) {
-            this.activeSkill = undefined;
+            this._activeSkill = undefined;
         }
 
         // Save the message - we do this async
@@ -135,12 +136,12 @@ export class UserSession {
         return Promise.resolve();
     }
 
-    private virtualAlexa(message: SkillBotMessage): VirtualAlexa {
+    private activeSkill(message: SkillBotMessage): SkillHolder {
         const skillUtterance = message.skillUtterance as SkillUtterance;
 
         // If we don't have an active skill, or this is a new skill that has been invoked,
         //  we creata new emulator
-        if (!this.activeSkill || (this.activeSkill as any).id !== skillUtterance.skill.id) {
+        if (!this._activeSkill || this._activeSkill.skill.id !== skillUtterance.skill.id) {
             const builder = VirtualAlexa.Builder();
             if (skillUtterance.skill.interactionModel) {
                 builder.interactionModel(skillUtterance.skill.interactionModel);
@@ -150,11 +151,13 @@ export class UserSession {
             }
 
             builder.skillURL(skillUtterance.skill.url);
-            this.activeSkill = builder.create();
-
-            // We store the skill ID on the emulator for convenience
-            (this.activeSkill as any).id = skillUtterance.skill.id;
+            this._activeSkill = new SkillHolder(skillUtterance.skill, builder.create());
         }
-        return this.activeSkill;
+
+        return this._activeSkill;
     }
+}
+
+export class SkillHolder {
+    public constructor(public skill: ISkillConfiguration, public virtualAlexa: VirtualAlexa) {}
 }

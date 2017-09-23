@@ -13,7 +13,7 @@ AlphaV1
 - [X] Save data from default skill to DB
 - [X] Make skill configuration easy
     - [X] Automatically configure source
-    - [ ] Get image for skill to show - author_name, author_icon, author_link on slack
+    - [X] Get image for skill to show - author_name, author_icon, author_link on slack
     - [ ] Put AWS keys into environment variables
 - [X] Add directions
     - [X] For configuring live skill
@@ -21,13 +21,13 @@ AlphaV1
 - [ ] Add CI, code coverage and npm versions to all the repos
     - [X] client
     - [X] server
-    - [ ] slackbot
+    - [X] slackbot
     - [ ] default-skill
 - [ ] test conversation in general channel
+- [ ] Update skill info without restart
 
 AlphaV2
 - [X] Remove houndify
-- [ ] Update skill info without restart
 - [ ] Automatically toggle between spoke and proxy
 - [ ] support device location permission
 - [ ] Add directions
