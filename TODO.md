@@ -15,13 +15,19 @@ AlphaV1
     - [X] Automatically configure source
     - [ ] Get image for skill to show - author_name, author_icon, author_link on slack
     - [ ] Put AWS keys into environment variables
-- [ ] Add directions
-    - [ ] For configuring live skill
+- [X] Add directions
+    - [X] For configuring live skill
     - [ ] for using custom bespoken properties
 - [ ] Add CI, code coverage and npm versions to all the repos
+    - [X] client
+    - [X] server
+    - [ ] slackbot
+    - [ ] default-skill
 - [ ] test conversation in general channel
 
 AlphaV2
+- [X] Remove houndify
+- [ ] Update skill info without restart
 - [ ] Automatically toggle between spoke and proxy
 - [ ] support device location permission
 - [ ] Add directions
@@ -33,8 +39,9 @@ AlphaV2
     - [ ] lock down spokes
 - [ ] clean up payloads
 - [ ] Make ssml cleaner more robust - allow for escaping \> \<
-- [X] Remove houndify
 - [ ] Rename router, pull in message handler to it
+- [ ] Update the favicon for skillbot server
+- [ ] send multiple commands quickly
 
 AlphaV3
 - [ ] support for flash briefings

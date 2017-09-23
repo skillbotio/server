@@ -2,6 +2,7 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import {ISkillConfiguration} from "./ISkillConfiguration";
 import {SkillDataStore} from "./SkillDataStore";
+import {SkillManager} from "./SkillManager";
 
 export class SkillConfigurationRouter {
     public router(): express.Router {
@@ -57,6 +58,9 @@ export class SkillConfigurationRouter {
                 }
 
                 await dataStore.saveSkill(skillJSON);
+
+                // Refresh the cache for this skill
+                SkillManager.Instance.put(skillJSON);
                 // Just send a 200 if this saves
                 response.status(200);
                 response.send();

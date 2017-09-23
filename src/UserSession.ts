@@ -9,7 +9,6 @@ export class UserSession {
     private activeSkill?: VirtualAlexa;
     private dataStore: MessageDataStore;
     private defaultSkill: VirtualAlexa;
-    private enginesByID: {[id: string]: VirtualAlexa} = {};
 
     public constructor(private userID: string) {
         // We instantiate a default skill for each user
@@ -26,13 +25,15 @@ export class UserSession {
     public handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
         if (message.isForSkill()) {
             const alexa = this.virtualAlexa(message);
-            this.activeSkill = alexa;
             alexa.context().setUserID(this.userID);
             return this.invokeSkill(alexa, message);
+
         } else if (this.activeSkill) {
             return this.invokeSkill(this.activeSkill, message);
+
         } else if (this.defaultSkill) {
             return this.invokeSkill(this.defaultSkill, message, true);
+
         } else {
             throw new Error("This should not happen - no default configured and no matching skill");
         }
@@ -134,10 +135,12 @@ export class UserSession {
         return Promise.resolve();
     }
 
-    private virtualAlexa(message: SkillBotMessage) {
+    private virtualAlexa(message: SkillBotMessage): VirtualAlexa {
         const skillUtterance = message.skillUtterance as SkillUtterance;
-        let alexa = this.enginesByID[skillUtterance.skill.id];
-        if (!alexa) {
+
+        // If we don't have an active skill, or this is a new skill that has been invoked,
+        //  we creata new emulator
+        if (!this.activeSkill || (this.activeSkill as any).id !== skillUtterance.skill.id) {
             const builder = VirtualAlexa.Builder();
             if (skillUtterance.skill.interactionModel) {
                 builder.interactionModel(skillUtterance.skill.interactionModel);
@@ -147,9 +150,11 @@ export class UserSession {
             }
 
             builder.skillURL(skillUtterance.skill.url);
-            alexa = builder.create();
-            this.enginesByID[skillUtterance.skill.id] = alexa;
+            this.activeSkill = builder.create();
+
+            // We store the skill ID on the emulator for convenience
+            (this.activeSkill as any).id = skillUtterance.skill.id;
         }
-        return alexa;
+        return this.activeSkill;
     }
 }
