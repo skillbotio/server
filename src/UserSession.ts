@@ -1,6 +1,6 @@
 import {VirtualAlexa} from "virtual-alexa";
 import {ISkillConfiguration} from "./ISkillConfiguration";
-import {IMessage, MessageDataStore} from "./MessageDataStore";
+import {IMessage, IUser, MessageDataStore} from "./MessageDataStore";
 import {SkillBotMessage, SkillUtterance} from "./SkillBotMessage";
 import {SkillBotReply} from "./SkillBotReply";
 import {SkillManager} from "./SkillManager";
@@ -23,33 +23,68 @@ export class UserSession {
         }
     }
 
-    public handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
-        if (message.addressesSkill()) {
+    public async handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
+        const user: any = await this.dataStore.findUserByID(message.source, message.userID);
+
+        let skillbotReply;
+        if (this.onboarding(user)) {
+            // If we are onboarding
+            this.applyFilter(user, message, this.defaultSkill);
+            const json = await this.defaultSkill.virtualAlexa.utter(message.fullMessage);
+            skillbotReply = SkillBotReply.alexaResponseToReply(this.defaultSkill.skill, message, json);
+
+        } else if (message.addressesSkill()) {
+            // If this message explicitly addresses a skill
             const skill = this.activeSkill(message);
-            skill.virtualAlexa.context().setUserID(this.userID);
-            return this.invokeSkill(skill, message);
+            this.applyFilter(user, message, skill);
+
+            const skillUtterance = message.skillUtterance as SkillUtterance;
+            const json = skillUtterance.isLaunch()
+                ? await skill.virtualAlexa.launch()
+                : await skill.virtualAlexa.utter(skillUtterance.utterance);
+
+            skillbotReply = SkillBotReply.alexaResponseToReply(skill.skill, message, json);
 
         } else if (this._activeSkill) {
-            return this.invokeSkill(this._activeSkill, message);
-
-        } else if (this.defaultSkill) {
-            return this.invokeSkill(this.defaultSkill, message, true);
+            // If we already have an active skill
+            this.applyFilter(user, message, this._activeSkill);
+            if (message.isEndSession()) {
+                const json = await this._activeSkill.virtualAlexa.endSession();
+                skillbotReply = SkillBotReply.sessionEnded(json);
+            } else {
+                const json = await this._activeSkill.virtualAlexa.utter(message.fullMessage);
+                skillbotReply = SkillBotReply.alexaResponseToReply(this._activeSkill.skill, message, json);
+            }
 
         } else {
-            throw new Error("This should not happen - no default configured and no matching skill");
+            // Otherwise just just send this to the default skill
+            this.applyFilter(user, message, this.defaultSkill);
+            const json = await this.defaultSkill.virtualAlexa.utter(message.fullMessage);
+            skillbotReply = SkillBotReply.alexaResponseToReply(this.defaultSkill.skill, message, json);
         }
+
+        if (skillbotReply.sessionEnded) {
+            this._activeSkill = undefined;
+        }
+
+        // Save the message - we do this async
+        this.saveMessage(message, skillbotReply).then(() => {
+            console.log("Message saved");
+        });
+
+        // Save the user - we do async
+        // Either inserts or updates the user, with attributes from payload
+        this.saveUser(user, message, skillbotReply).then(() =>  {
+            console.log("Saved user");
+        });
+
+        return skillbotReply;
     }
 
-    private async invokeSkill(skill: SkillHolder,
-                              message: SkillBotMessage,
-                              defaulted = false): Promise<SkillBotReply> {
-        const user: any = await this.dataStore.findUserByID(message.source, message.userID);
-        let onboarding = false;
-        if (!user || !user.attributes || !user.attributes.postalCode) {
-            onboarding = true;
-        }
+    private applyFilter(user: IUser, message: SkillBotMessage, skill: SkillHolder) {
+        // Make sure the user ID is set
+        skill.virtualAlexa.context().setUserID(this.userID);
 
-        let reply;
         // Set a filter on the VirtualAlexa instance to set data that is useful
         skill.virtualAlexa.filter((request) => {
             // We add a skillBot object to the request, with the source set on it
@@ -67,45 +102,14 @@ export class UserSession {
                 }
             }
 
-            if (onboarding) {
+            if (this.onboarding(user)) {
                 request.skillbot.onboarding = true;
             }
         });
+    }
 
-        if (message.addressesSkill()) {
-            const skillUtterance = message.skillUtterance as SkillUtterance;
-            const json = skillUtterance.isLaunch()
-                ? await skill.virtualAlexa.launch()
-                : await skill.virtualAlexa.utter(skillUtterance.utterance);
-            reply = SkillBotReply.alexaResponseToReply(skill.skill, message, json);
-
-        } else if (!defaulted && message.isEndSession()) {
-            // We do not wait on an end session - no reply is allowed
-            skill.virtualAlexa.endSession();
-            reply = SkillBotReply.sessionEnded(message);
-
-        } else {
-            const json = await skill.virtualAlexa.utter(message.fullMessage);
-            reply = SkillBotReply.alexaResponseToReply(skill.skill, message, json);
-
-        }
-
-        if (reply.sessionEnded) {
-            this._activeSkill = undefined;
-        }
-
-        // Save the message - we do this async
-        this.saveMessage(message, reply).then(() => {
-            console.log("Message saved");
-        });
-
-        // Save the user - we do async
-        // Either inserts or updates the user, with attributes from payload
-        this.saveUser(user, message, reply).then(() =>  {
-            console.log("Saved user");
-        });
-
-        return reply;
+    private onboarding(user: IUser): boolean {
+        return !user || !user.attributes || !user.attributes.postalCode;
     }
 
     private saveMessage(message: SkillBotMessage, reply: any): Promise<IMessage> {

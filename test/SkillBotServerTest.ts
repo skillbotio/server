@@ -111,9 +111,23 @@ describe("SkillBot End-to-End Tests", function() {
 
             // The timing of this test is tricky - we save the user asynchronously on the server
             //  So it may not be saved when we go to look for it - perhaps add a setTimeout or nextTick here?
-            const user = await ds.findUserByID("slack", "JPK") as IUser;
+            const user = await ds.findUserByID("UNIT", "JPK") as IUser;
             assert.equal(user.attributes.userProperty, "test");
             assert.isTrue(user.attributes.userPropertyBoolean);
+        });
+
+        it("Is onboarding for a new user", async () => {
+            const options = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=NEW_USER"
+                + "&source=UNIT"
+                + "&channel=CHANNEL1"
+                + "&utterance=ask skillbot test play",
+            };
+
+            const reply = await request(options);
+            assert.isTrue(reply.text.indexOf("Just a couple questions") !== -1);
         });
 
         it("Handles session interaction", async () => {
