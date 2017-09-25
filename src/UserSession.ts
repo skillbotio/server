@@ -57,6 +57,16 @@ export class UserSession {
                 source: message.source,
             };
 
+            if (user && user.attributes) {
+                if (user.attributes.postalCode) {
+                    request.skillbot.postalCode = user.attributes.postalCode;
+                }
+
+                if (user.attributes && user.attributes.country) {
+                    request.skillbot.countryCode = user.attributes.country;
+                }
+            }
+
             if (onboarding) {
                 request.skillbot.onboarding = true;
             }

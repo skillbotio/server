@@ -15,7 +15,7 @@ AlphaV1
     - [X] Automatically configure source
     - [X] Get image for skill to show - author_name, author_icon, author_link on slack
     - [X] Put AWS keys into environment variables
-- [ ] Add support for channel parameter
+- [X] Add support for channel parameter
 - [X] Add directions
     - [X] For configuring live skill
     - [ ] for using custom bespoken properties
@@ -31,7 +31,9 @@ AlphaV1
 
 AlphaV2
 - [X] Remove houndify
+- [X] Rename router, pull in message handler to it
 - [ ] update logo on installation screen
+- [ ] when inviting to join a channel gives an error
 - [ ] Automatically toggle between spoke and proxy
 - [ ] support device location permission
 - [ ] Add directions
@@ -43,9 +45,7 @@ AlphaV2
     - [ ] lock down spokes
 - [ ] clean up payloads
 - [ ] Make ssml cleaner more robust - allow for escaping \> \<
-- [ ] Rename router, pull in message handler to it
 - [ ] Update the favicon for skillbot server
-- [ ] send multiple commands quickly
 
 AlphaV3
 - [ ] support for flash briefings
@@ -58,6 +58,7 @@ AlphaV3
 - [ ] remove punctuation from utterances
 - [ ] Logo
 - [ ] Make AWS credentials able to be set at profile level
+- [ ] send multiple commands quickly
 
 Beta
 - [ ] Integration as command with bst ("botify?")
