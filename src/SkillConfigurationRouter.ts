@@ -61,6 +61,7 @@ export class SkillConfigurationRouter {
 
                 // Refresh the cache for this skill
                 SkillManager.Instance.put(skillJSON);
+
                 // Just send a 200 if this saves
                 response.status(200);
                 response.send();

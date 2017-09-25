@@ -32,6 +32,29 @@ const interactionModel = {
 
 describe("SkillBot End-to-End Tests", function() {
     this.timeout(5000);
+
+    const mockSkillResponse = {
+        response: {
+            card: {
+                content: "My TextField",
+                image: {
+                    largeImageUrl: "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg",
+                },
+                title: "My Title",
+            },
+            outputSpeech: {
+                ssml: "<speak> Hi </speak>",
+                type: "SSML",
+            },
+        },
+        sessionAttributes: {
+            user: {
+                userProperty: "test",
+                userPropertyBoolean: true,
+            },
+        },
+    };
+
     let server: SkillBotServer;
     beforeEach(async () => {
         server = new SkillBotServer();
@@ -62,34 +85,17 @@ describe("SkillBot End-to-End Tests", function() {
             nock("http://skill.com")
                 .post("/fake_url", (body: any) => {
                     // Test to make sure that the body is set correctly
-                    return body.skillbot && body.skillbot.source === "slack";
+                    return body.skillbot && body.skillbot.source === "UNIT";
                 })
-                .reply(200, {
-                    response: {
-                        card: {
-                            content: "My TextField",
-                            image: {
-                                largeImageUrl: "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg",
-                            },
-                            title: "My Title",
-                        },
-                        outputSpeech: {
-                            ssml: "<speak> Hi </speak>",
-                            type: "SSML",
-                        },
-                    },
-                    sessionAttributes: {
-                        user: {
-                            userProperty: "test",
-                            userPropertyBoolean: true,
-                        },
-                    },
-                });
+                .reply(200, mockSkillResponse);
 
             const options = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=ask skillbot test play&source=slack",
+                uri: "http://localhost:3001/message?userID=JPK"
+                    + "&source=UNIT"
+                    + "&channel=CHANNEL1"
+                    + "&utterance=ask skillbot test play",
             };
 
             const reply = await request(options);
@@ -111,37 +117,11 @@ describe("SkillBot End-to-End Tests", function() {
         });
 
         it("Handles session interaction", async () => {
-            const skill: ISkillConfiguration = {
-                id: "testID",
-                interactionModel,
-                invocationName: "skillbot test",
-                name: "test skill",
-                secretKey: "testSecretKey",
-                sourceID: "testSourceID",
-                url: "http://skill.com/fake_url",
-            };
-
-            SkillManager.Instance.put(skill);
-
             // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
                 .post("/fake_url")
                 .times(2)
-                .reply(200, {
-                    response: {
-                        card: {
-                            content: "My TextField",
-                            image: {
-                                largeImageUrl: "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg",
-                            },
-                            title: "My Title",
-                        },
-                        outputSpeech: {
-                            ssml: "<speak> Hi </speak>",
-                            type: "SSML",
-                        },
-                    },
-                });
+                .reply(200, mockSkillResponse);
 
             nock("http://skill.com")
                 .post("/fake_url")
@@ -155,7 +135,10 @@ describe("SkillBot End-to-End Tests", function() {
             const options = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=ask skillbot test play",
+                uri: "http://localhost:3001/message?userID=JPK"
+                    + "&source=UNIT"
+                    + "&channel=CHANNEL1"
+                    + "&utterance=ask skillbot test play",
             };
 
             let reply = await request(options);
@@ -163,7 +146,10 @@ describe("SkillBot End-to-End Tests", function() {
             const callTwo = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=play",
+                uri: "http://localhost:3001/message?userID=JPK"
+                    + "&source=UNIT"
+                    + "&channel=CHANNEL1"
+                    + "&utterance=play",
             };
             reply = await request(callTwo);
             assert.isFalse(reply.sessionEnded);
@@ -172,43 +158,20 @@ describe("SkillBot End-to-End Tests", function() {
             const callThree = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=play",
+                uri: "http://localhost:3001/message?userID=JPK"
+                    + "&source=UNIT"
+                    + "&channel=CHANNEL1"
+                    + "&utterance=play",
             };
             reply = await request(callThree);
             assert.isTrue(reply.sessionEnded);
         });
 
         it("Handles explicit session end", async () => {
-            const skill: ISkillConfiguration = {
-                id: "testID",
-                interactionModel,
-                invocationName: "skillbot test",
-                name: "test skill",
-                secretKey: "testSecretKey",
-                sourceID: "testSourceID",
-                url: "http://skill.com/fake_url",
-            };
-
-            SkillManager.Instance.put(skill);
-
             // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
                 .post("/fake_url")
-                .reply(200, {
-                    response: {
-                        card: {
-                            content: "My TextField",
-                            image: {
-                                largeImageUrl: "https://i.giphy.com/media/3o7buirYcmV5nSwIRW/480w_s.jpg",
-                            },
-                            title: "My Title",
-                        },
-                        outputSpeech: {
-                            ssml: "<speak> Hi </speak>",
-                            type: "SSML",
-                        },
-                    },
-                });
+                .reply(200, mockSkillResponse);
 
             nock("http://skill.com")
                 .post("/fake_url")
@@ -222,7 +185,10 @@ describe("SkillBot End-to-End Tests", function() {
             const options = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=ask skillbot test play",
+                uri: "http://localhost:3001/message?userID=JPK"
+                    + "&source=UNIT"
+                    + "&channel=CHANNEL1"
+                    + "&utterance=ask skillbot test play",
             };
 
             let reply = await request(options);
@@ -230,11 +196,43 @@ describe("SkillBot End-to-End Tests", function() {
             const callTwo = {
                 json: true, // Automatically stringifies the body to JSON
                 method: "GET",
-                uri: "http://localhost:3001/message?userID=JPK&utterance=quit",
+                uri: "http://localhost:3001/message?userID=JPK&channel=CHANNEL1&source=UNIT&utterance=quit",
             };
             reply = await request(callTwo);
             assert.isTrue(reply.sessionEnded);
             assert.equal(reply.text, "Goodbye!");
+        });
+
+        it("Handles two separate sessions by channel", async () => {
+            // We use nock to intercept network calls and return a mock response
+            nock("http://skill.com")
+                .post("/fake_url", (body: any) => {
+                        // Test to make sure that the body is set correctly
+                        return body.session.new === true;
+                    })
+                .times(2)
+                .reply(200, { response: {} });
+
+            const options = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK"
+                    + "&source=UNIT"
+                    + "&channel=CHANNEL_1"
+                    + "&utterance=ask skillbot test play",
+            };
+
+            let reply = await request(options);
+
+            const callTwo = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK"
+                    + "&source=UNIT"
+                    + "&channel=CHANNEL_2"
+                    + "&utterance=ask skillbot test play",
+            };
+            reply = await request(callTwo);
         });
     });
 

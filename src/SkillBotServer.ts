@@ -3,7 +3,7 @@ import * as express from "express";
 import * as https from "https";
 import * as net from "net";
 import {MessageDataStore} from "./MessageDataStore";
-import {SimpleRestRouter} from "./SimpleRestRouter";
+import {SkillBotRouter} from "./SkillBotRouter";
 import {SkillConfigurationRouter} from "./SkillConfigurationRouter";
 import {SkillLoader} from "./SkillLoader";
 
@@ -23,7 +23,7 @@ export class SkillBotServer {
         // Swagger is the only static for now
         app.use(express.static("static"));
 
-        app.use(new SimpleRestRouter().router());
+        app.use(new SkillBotRouter().router());
 
         app.use(new SkillConfigurationRouter().router());
 

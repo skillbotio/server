@@ -14,7 +14,8 @@ AlphaV1
 - [X] Make skill configuration easy
     - [X] Automatically configure source
     - [X] Get image for skill to show - author_name, author_icon, author_link on slack
-    - [ ] Put AWS keys into environment variables
+    - [X] Put AWS keys into environment variables
+- [ ] Add support for channel parameter
 - [X] Add directions
     - [X] For configuring live skill
     - [ ] for using custom bespoken properties
@@ -25,9 +26,12 @@ AlphaV1
     - [ ] default-skill
 - [ ] test conversation in general channel
 - [ ] Update skill info without restart
+- [ ] make sure location data is coming back
+- [ ] make sure onboarding works
 
 AlphaV2
 - [X] Remove houndify
+- [ ] update logo on installation screen
 - [ ] Automatically toggle between spoke and proxy
 - [ ] support device location permission
 - [ ] Add directions

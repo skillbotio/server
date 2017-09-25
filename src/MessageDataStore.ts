@@ -85,6 +85,7 @@ userSchema.pre("validate", prevalidate);
 const userModel = mongoose.model<IUser>("user", userSchema, "users", true);
 
 export interface IMessage extends IModel {
+    channel: string;
     userID: string;
     source: string;
     message: string;
@@ -92,6 +93,10 @@ export interface IMessage extends IModel {
 }
 
 const messageSchema = new mongoose.Schema({
+        channel: {
+            required: true,
+            type: String,
+        },
         createdAt: {
             required: true,
             type: Date,

@@ -50,6 +50,7 @@ describe("MessageDataStore Test", function() {
         it("Saves and fetches a message", async () => {
             const ds = new MessageDataStore();
             let message = {
+                channel: "CHANNEL_TEST",
                 message: "testMessage",
                 reply: { test: "test" },
                 source: "UNIT_TEST",

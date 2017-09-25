@@ -4,7 +4,10 @@ import {ISkillConfiguration} from "./ISkillConfiguration";
 export class SkillBotMessage {
     public skillUtterance?: SkillUtterance;
 
-    public constructor(public source: string, public userID: string, public fullMessage: string) {
+    public constructor(public source: string,
+                       public channel: string,
+                       public userID: string,
+                       public fullMessage: string) {
         this.fullMessage = fullMessage.toLowerCase();
         this.parse();
     }
@@ -15,6 +18,10 @@ export class SkillBotMessage {
 
     public isEndSession(): boolean {
         return ["exit", "quit"].some((v) => v === this.fullMessage);
+    }
+
+    public sessionKey(): string {
+        return this.source + this.channel + this.userID;
     }
 
     private parse(): void {

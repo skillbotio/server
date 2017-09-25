@@ -100,6 +100,7 @@ export class UserSession {
 
     private saveMessage(message: SkillBotMessage, reply: any): Promise<IMessage> {
         const messageModel: any = {
+            channel: message.channel,
             message: message.fullMessage,
             reply,
             source: message.source,
