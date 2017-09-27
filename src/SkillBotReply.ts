@@ -5,6 +5,7 @@ export class SkillBotReply {
     public static alexaResponseToReply(skill: ISkillConfiguration,
                                        message: SkillBotMessage,
                                        response: any): SkillBotReply {
+        console.log("Reply: " + JSON.stringify(response, null, 2));
         const reply = new SkillBotReply(message);
         const outputSpeech = response.response && response.response.outputSpeech;
         let isAudio = false;
