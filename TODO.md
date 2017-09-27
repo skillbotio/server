@@ -18,26 +18,31 @@ AlphaV1
 - [X] Add support for channel parameter
 - [X] Add directions
     - [X] For configuring live skill
-    - [ ] for using custom bespoken properties
+    - [X] for using custom bespoken properties
 - [ ] Add CI, code coverage and npm versions to all the repos
     - [X] client
     - [X] server
     - [X] slackbot
     - [ ] default-skill
-- [ ] test conversation in general channel
+- [X] test conversation in general channel
 - [ ] Update skill info without restart
-- [ ] make sure location data is coming back
-- [ ] make sure onboarding works
+- [X] make sure location data is coming back
+- [X] make sure onboarding works
 
 AlphaV2
 - [X] Remove houndify
 - [X] Rename router, pull in message handler to it
+- [X] Add directions
+    - [ ] For configuring with Proxy
+- [ ] enable logless on default skill
+- [ ] try out thumb_url for the skill identification
+- [ ] add snippets for json payloads - with debug command
+    https://api.slack.com/methods/files.upload
 - [ ] update logo on installation screen
-- [ ] when inviting to join a channel gives an error
+- [ ] Add version command
+- [ ] when inviting to join a channel gives asks for onboarding info again
 - [ ] Automatically toggle between spoke and proxy
 - [ ] support device location permission
-- [ ] Add directions
-    - [ ] For configuring with Proxy
 - [ ] Lambda security
     - [ ] Should we use cross-account access?
     - [ ] https://read.iopipe.com/public-cross-account-functions-on-aws-lambda-bcc148303083
