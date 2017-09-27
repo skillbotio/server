@@ -4,52 +4,54 @@ import {SkillBotMessage} from "./SkillBotMessage";
 export class SkillBotReply {
     public static alexaResponseToReply(skill: ISkillConfiguration,
                                        message: SkillBotMessage,
-                                       response: any): SkillBotReply {
-        console.log("Reply: " + JSON.stringify(response, null, 2));
+                                       replyJSON: any): SkillBotReply {
+        console.log("Alexa Response: " + JSON.stringify(replyJSON, null, 2));
         const reply = new SkillBotReply(message);
-        const outputSpeech = response.response && response.response.outputSpeech;
-        let isAudio = false;
-        if (outputSpeech) {
-            if (outputSpeech.type === "PlainText") {
-                reply.text = outputSpeech.text;
-            } else if (outputSpeech.type === "SSML") {
-                reply.text = SkillBotReply.cleanSSML(outputSpeech.ssml);
-                isAudio = true;
-            }
-        }
-
-        const card = response.response && response.response.card;
-        if (card) {
-            reply.card = {};
-            reply.card.title = card.title;
-            // If the reply is audio, we prefer the card text if available
-            // Then no need for text-to-speech
-            if (isAudio) {
-                if (card.content) {
-                    reply.card.content = card.content;
-                } else if (card.text) {
-                    reply.card.content = card.text;
+        if (replyJSON.response) {
+            const outputSpeech = replyJSON.response.outputSpeech;
+            let isAudio = false;
+            if (outputSpeech) {
+                if (outputSpeech.type === "PlainText") {
+                    reply.text = outputSpeech.text;
+                } else if (outputSpeech.type === "SSML") {
+                    reply.text = SkillBotReply.cleanSSML(outputSpeech.ssml);
+                    isAudio = true;
                 }
             }
 
-            if (card.image) {
-                if (card.image.largeImageUrl) {
-                    reply.card.imageURL = card.image.largeImageUrl;
-                } else if (card.smallImageUrl) {
-                    reply.card.imageURL = card.image.smallImageUrl;
+            const card = replyJSON.response.card;
+            if (card) {
+                reply.card = {};
+                reply.card.title = card.title;
+                // If the reply is audio, we prefer the card text if available
+                // Then no need for text-to-speech
+                if (isAudio) {
+                    if (card.content) {
+                        reply.card.content = card.content;
+                    } else if (card.text) {
+                        reply.card.content = card.text;
+                    }
+                }
+
+                if (card.image) {
+                    if (card.image.largeImageUrl) {
+                        reply.card.imageURL = card.image.largeImageUrl;
+                    } else if (card.smallImageUrl) {
+                        reply.card.imageURL = card.image.smallImageUrl;
+                    }
                 }
             }
-        }
 
-        if (response.response.directives) {
-            const directive = response.response.directives[0];
-            if (directive.type === "AudioPlayer.Play") {
-                reply.streamURL = directive.audioItem.stream.url;
+            if (replyJSON.response.directives) {
+                const directive = replyJSON.response.directives[0];
+                if (directive.type === "AudioPlayer.Play") {
+                    reply.streamURL = directive.audioItem.stream.url;
+                }
             }
-        }
 
-        if (response.response.shouldEndSession) {
-            reply.sessionEnded = true;
+            if (replyJSON.response.shouldEndSession) {
+                reply.sessionEnded = true;
+            }
         }
 
         if (skill) {
@@ -59,7 +61,7 @@ export class SkillBotReply {
             };
         }
 
-        reply.raw = response;
+        reply.raw = replyJSON;
         return reply;
     }
 

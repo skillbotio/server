@@ -87,6 +87,7 @@ export class UserSession {
 
         // Set a filter on the VirtualAlexa instance to set data that is useful
         skill.virtualAlexa.filter((request) => {
+            console.log("Alexa Request: " + JSON.stringify(request, null, 2));
             // We add a skillBot object to the request, with the source set on it
             request.skillbot = {
                 source: message.source,
