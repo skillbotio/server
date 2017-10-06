@@ -7,7 +7,7 @@ export class SkillBotReply {
                                        message: SkillBotMessage,
                                        replyJSON: any): SkillBotReply {
         console.log("Alexa Response: " + JSON.stringify(replyJSON, null, 2));
-        const reply = new SkillBotReply(message);
+        const reply = new SkillBotReply();
         if (replyJSON.response) {
             const outputSpeech = replyJSON.response.outputSpeech;
             let isAudio = false;
@@ -70,7 +70,7 @@ export class SkillBotReply {
     }
 
     public static sessionEnded(message: SkillBotMessage) {
-        const reply = new SkillBotReply(message);
+        const reply = new SkillBotReply();
         reply.sessionEnded = true;
         reply.text = "Goodbye!";
         return reply;
@@ -98,10 +98,9 @@ export class SkillBotReply {
         imageURL?: string;
     };
     public streamURL: string;
-    public text: string;
     public user: IUser;
 
-    public constructor(public message: SkillBotMessage, text?: string) {}
+    public constructor(public text?: string) {}
 
 }
 
