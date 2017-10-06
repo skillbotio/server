@@ -19,13 +19,12 @@ AlphaV1
 - [X] Add directions
     - [X] For configuring live skill
     - [X] for using custom bespoken properties
-- [ ] Add CI, code coverage and npm versions to all the repos
+- [X] Add CI, code coverage and npm versions to all the repos
     - [X] client
     - [X] server
     - [X] slackbot
-    - [ ] default-skill
 - [X] test conversation in general channel
-- [ ] Update skill info without restart
+- [X] Update skill info without restart
 - [X] make sure location data is coming back
 - [X] make sure onboarding works
 
@@ -34,11 +33,11 @@ AlphaV2
 - [X] Rename router, pull in message handler to it
 - [X] Add directions
     - [ ] For configuring with Proxy
+- [X] add snippets for json payloads - with debug command
 - [ ] enable logless on default skill
+- [ ] Add CI on default skill
 - [ ] try out thumb_url for the skill identification
-- [ ] add snippets for json payloads - with debug command
-    https://api.slack.com/methods/files.upload
-- [ ] update logo on installation screen
+- [ ] update logo on installation screen for slack - no more silentecho
 - [ ] Add version command
 - [ ] when inviting to join a channel gives asks for onboarding info again
 - [ ] Automatically toggle between spoke and proxy

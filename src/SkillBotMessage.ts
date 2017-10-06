@@ -3,6 +3,7 @@ import {ISkillConfiguration} from "./ISkillConfiguration";
 
 export class SkillBotMessage {
     public skillUtterance?: SkillUtterance;
+    public rawJSON?: any;
 
     public constructor(public source: string,
                        public channel: string,

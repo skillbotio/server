@@ -67,6 +67,8 @@ export class UserSession {
             this._activeSkill = undefined;
         }
 
+        skillbotReply.user = user;
+
         // Save the message - we do this async
         this.saveMessage(message, skillbotReply).then(() => {
             console.log("Message saved");
@@ -87,7 +89,12 @@ export class UserSession {
 
         // Set a filter on the VirtualAlexa instance to set data that is useful
         skill.virtualAlexa.filter((request) => {
+            // For debugging - print out the request
             console.log("Alexa Request: " + JSON.stringify(request, null, 2));
+
+            // Capture the request on the message
+            message.rawJSON = request;
+
             // We add a skillBot object to the request, with the source set on it
             request.skillbot = {
                 source: message.source,

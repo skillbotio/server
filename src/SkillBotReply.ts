@@ -1,5 +1,6 @@
 import {ISkillConfiguration} from "./ISkillConfiguration";
 import {SkillBotMessage} from "./SkillBotMessage";
+import {IUser} from "./MessageDataStore";
 
 export class SkillBotReply {
     public static alexaResponseToReply(skill: ISkillConfiguration,
@@ -61,7 +62,10 @@ export class SkillBotReply {
             };
         }
 
-        reply.raw = replyJSON;
+        reply.raw = {
+            request: message.rawJSON,
+            response: replyJSON,
+        };
         return reply;
     }
 
@@ -83,15 +87,19 @@ export class SkillBotReply {
         return ssml.trim();
     }
 
-    public sessionEnded: boolean = false;
     public card?: ISkillBotCard;
-    public raw: any;
+    public raw: {
+        request: any;
+        response: any;
+    };
+    public sessionEnded: boolean = false;
     public skill?: {
         name: string;
         imageURL?: string;
     };
     public streamURL: string;
     public text: string;
+    public user: IUser;
 
     public constructor(public message: SkillBotMessage, text?: string) {}
 
