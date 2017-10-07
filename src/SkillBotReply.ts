@@ -57,6 +57,7 @@ export class SkillBotReply {
 
         if (skill) {
             reply.skill = {
+                id: skill.id,
                 imageURL: skill.imageURL,
                 name: skill.name,
             };
@@ -73,6 +74,7 @@ export class SkillBotReply {
         const reply = new SkillBotReply();
 
         reply.skill = {
+            id: skill.id,
             imageURL: skill.imageURL,
             name: skill.name,
         };
@@ -100,6 +102,7 @@ export class SkillBotReply {
     };
     public sessionEnded: boolean = false;
     public skill?: {
+        id: string;
         name: string;
         imageURL?: string;
     };
