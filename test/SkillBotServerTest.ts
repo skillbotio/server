@@ -50,6 +50,7 @@ describe("SkillBot End-to-End Tests", function() {
         sessionAttributes: {
             user: {
                 userProperty: "test",
+                userProperty2: "test2",
                 userPropertyBoolean: true,
             },
         },
@@ -82,6 +83,8 @@ describe("SkillBot End-to-End Tests", function() {
     describe("Calls mock skill", () => {
         it("Handles simple message", async () => {
             // We use nock to intercept network calls and return a mock response
+            const randomValue = Math.random() + "";
+            (mockSkillResponse.sessionAttributes.user as any).testRandom = randomValue;
             nock("http://skill.com")
                 .post("/fake_url", (body: any) => {
                     // Test to make sure that the body is set correctly
@@ -113,6 +116,7 @@ describe("SkillBot End-to-End Tests", function() {
             //  So it may not be saved when we go to look for it - perhaps add a setTimeout or nextTick here?
             const user = await ds.findUserByID("UNIT", "JPK") as IUser;
             assert.equal(user.attributes.userProperty, "test");
+            assert.equal(user.attributes.testRandom, randomValue);
             assert.isTrue(user.attributes.userPropertyBoolean);
         });
 

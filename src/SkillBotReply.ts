@@ -69,8 +69,14 @@ export class SkillBotReply {
         return reply;
     }
 
-    public static sessionEnded(message: SkillBotMessage) {
+    public static sessionEnded(skill: ISkillConfiguration, message: SkillBotMessage) {
         const reply = new SkillBotReply();
+
+        reply.skill = {
+            imageURL: skill.imageURL,
+            name: skill.name,
+        };
+
         reply.sessionEnded = true;
         reply.text = "Goodbye!";
         return reply;

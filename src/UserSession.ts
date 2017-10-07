@@ -50,7 +50,7 @@ export class UserSession {
             this.applyFilter(user, message, this._activeSkill);
             if (message.isEndSession()) {
                 const json = await this._activeSkill.virtualAlexa.endSession();
-                skillbotReply = SkillBotReply.sessionEnded(json);
+                skillbotReply = SkillBotReply.sessionEnded(this._activeSkill.skill, json);
             } else {
                 const json = await this._activeSkill.virtualAlexa.utter(message.fullMessage);
                 skillbotReply = SkillBotReply.alexaResponseToReply(this._activeSkill.skill, message, json);
@@ -144,7 +144,7 @@ export class UserSession {
 
         // If we have the reply JSON
         if (reply.raw) {
-            const sessionAttributes = reply.raw.sessionAttributes;
+            const sessionAttributes = reply.raw.response.sessionAttributes;
             if (sessionAttributes && sessionAttributes.user) {
                 const userData = sessionAttributes.user;
                 for (const userAttribute of Object.keys(userData)) {

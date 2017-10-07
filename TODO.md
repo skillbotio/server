@@ -34,6 +34,7 @@ AlphaV2
 - [X] Add directions
     - [ ] For configuring with Proxy
 - [X] add snippets for json payloads - with debug command
+- [X] clean up payloads
 - [ ] enable logless on default skill
 - [ ] Add CI on default skill
 - [ ] try out thumb_url for the skill identification
@@ -47,7 +48,6 @@ AlphaV2
     - [ ] https://read.iopipe.com/public-cross-account-functions-on-aws-lambda-bcc148303083
     - [ ] Instructions on how to limit access to a particular lambda
     - [ ] lock down spokes
-- [ ] clean up payloads
 - [ ] Make ssml cleaner more robust - allow for escaping \> \<
 - [ ] Update the favicon for skillbot server
 
