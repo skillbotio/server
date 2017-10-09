@@ -35,12 +35,14 @@ AlphaV2
     - [ ] For configuring with Proxy
 - [X] add snippets for json payloads - with debug command
 - [X] clean up payloads
-- [ ] enable logless on default skill
-- [ ] Add CI on default skill
-- [ ] try out thumb_url for the skill identification
-- [ ] update logo on installation screen for slack - no more silentecho
-- [ ] Add version command
+- [X] Add CI on default skill
+- [X] try out thumb_url for the skill identification
+- [X] update logo on installation screen for slack - no more silentecho
+- [X] Update the favicon for skillbot server
 - [ ] when inviting to join a channel gives asks for onboarding info again
+- [ ] Add version command
+- [ ] enable logless on default skill
+- [ ] why is my literal slot value lowercase?
 - [ ] Automatically toggle between spoke and proxy
 - [ ] support device location permission
 - [ ] Lambda security
@@ -49,7 +51,6 @@ AlphaV2
     - [ ] Instructions on how to limit access to a particular lambda
     - [ ] lock down spokes
 - [ ] Make ssml cleaner more robust - allow for escaping \> \<
-- [ ] Update the favicon for skillbot server
 
 AlphaV3
 - [ ] support for flash briefings

@@ -17,6 +17,12 @@ export class SkillBotRouter {
             response.send("hello");
         });
 
+        router.get("/version", (request: express.Request, response: express.Response) => {
+            const packageJSON = require("../../package.json");
+            response.contentType("text/plain");
+            response.send(packageJSON.version);
+        });
+
         router.get("/message", async (request: express.Request, response: express.Response) => {
             // const messageJSON = request.body;
             const userID = request.query.userID;
