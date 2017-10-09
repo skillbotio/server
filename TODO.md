@@ -43,6 +43,7 @@ AlphaV2
 - [X] Add version command
 - [ ] Update URLs
 - [X] Create landing page
+- [ ] support real skill ids
 - [ ] enable logless on default skill
 - [ ] automate deployment of default-skill
 - [ ] why is my literal slot value lowercase?
@@ -57,6 +58,7 @@ AlphaV2
 
 AlphaV3
 - [ ] support for flash briefings
+- [ ] public/private setting
 - [ ] Add an FAQ
 - [ ] add audioURL for ssml payload that concatnates voice and text using tts?
 - [ ] How will default skill make data accessible?
