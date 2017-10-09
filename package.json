@@ -1,6 +1,6 @@
 {
   "name": "skill-bot",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "SkillBot",
   "nyc": {
     "exclude": [
