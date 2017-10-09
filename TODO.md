@@ -42,7 +42,7 @@ AlphaV2
 - [ ] when inviting to join a channel gives asks for onboarding info again
 - [X] Add version command
 - [ ] Update URLs
-- [ ] Create landing page
+- [X] Create landing page
 - [ ] enable logless on default skill
 - [ ] why is my literal slot value lowercase?
 - [ ] Automatically toggle between spoke and proxy

@@ -14,6 +14,9 @@ export class SkillBotServer {
     public async start(serverPort: number): Promise<void> {
         const app = express();
 
+        // Use ejs for views
+        app.set("view engine", "ejs");
+
         // JSON Parser
         app.use(bodyParser.json());
 

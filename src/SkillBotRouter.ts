@@ -10,9 +10,12 @@ export class SkillBotRouter {
 
     public router(): express.Router {
         const router = express.Router();
-
         router.use(bodyParser.json());
         router.use(bodyParser.urlencoded());
+
+        router.get("/", (request: express.Request, response: express.Response) => {
+            response.render("index");
+        });
 
         router.get("/ping", (request: express.Request, response: express.Response) => {
             response.send("hello");
