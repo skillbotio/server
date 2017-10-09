@@ -13,14 +13,8 @@ export class UserSession {
     public constructor(private userID: string) {
         // We instantiate a default skill for each user
         // This handles everything not directed at a specific skill
-        const skill = SkillManager.INSTANCE.get("Skillbot Default") as ISkillConfiguration;
         this.dataStore = new MessageDataStore();
-        if (skill) {
-            const defaultAlexa = VirtualAlexa.Builder()
-                .interactionModel(skill.interactionModel as any)
-                .skillURL(skill.url as string).create();
-            this.defaultSkill = new SkillHolder(skill, defaultAlexa);
-        }
+        this.initializeDefaultSkill();
     }
 
     public async handleMessage(message: SkillBotMessage): Promise<SkillBotReply> {
@@ -51,6 +45,9 @@ export class UserSession {
             if (message.isEndSession()) {
                 const json = await this._activeSkill.virtualAlexa.endSession();
                 skillbotReply = SkillBotReply.sessionEnded(this._activeSkill.skill, json);
+
+                // When we end the session, re-initialize our default skill
+                this.initializeDefaultSkill();
             } else {
                 const json = await this._activeSkill.virtualAlexa.utter(message.fullMessage);
                 skillbotReply = SkillBotReply.alexaResponseToReply(this._activeSkill.skill, message, json);
@@ -83,6 +80,15 @@ export class UserSession {
         return skillbotReply;
     }
 
+    private initializeDefaultSkill() {
+        const skillInfo = SkillManager.INSTANCE.get("Skillbot Default") as ISkillConfiguration;
+
+        const defaultAlexa = VirtualAlexa.Builder()
+                .interactionModel(skillInfo.interactionModel as any)
+                .skillURL(skillInfo.url as string).create();
+        this.defaultSkill = new SkillHolder(skillInfo, defaultAlexa);
+
+    }
     private applyFilter(user: IUser, message: SkillBotMessage, skill: SkillHolder) {
         // Make sure the user ID is set
         skill.virtualAlexa.context().setUserID(this.userID);

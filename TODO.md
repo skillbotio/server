@@ -40,8 +40,9 @@ AlphaV2
 - [X] update logo on installation screen for slack - no more silentecho
 - [X] Update the favicon for skillbot server
 - [ ] when inviting to join a channel gives asks for onboarding info again
-- [ ] Add version command
+- [X] Add version command
 - [ ] Update URLs
+- [ ] Create landing page
 - [ ] enable logless on default skill
 - [ ] why is my literal slot value lowercase?
 - [ ] Automatically toggle between spoke and proxy
