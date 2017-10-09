@@ -3,6 +3,7 @@ import * as express from "express";
 import {SkillBotMessage} from "./SkillBotMessage";
 import {SkillBotReply} from "./SkillBotReply";
 import {UserSession} from "./UserSession";
+import {SkillManager} from "./SkillManager";
 
 export class SkillBotRouter {
     private sessions: {[id: string]: UserSession} = {};
@@ -21,6 +22,12 @@ export class SkillBotRouter {
             const packageJSON = require("../../package.json");
             response.contentType("text/plain");
             response.send(packageJSON.version);
+        });
+
+        router.get("/skills", (request: express.Request, response: express.Response) => {
+            if (this.authenticate(request, response)) {
+                response.send(JSON.stringify(SkillManager.INSTANCE.skills, null, 2));
+            }
         });
 
         router.get("/message", async (request: express.Request, response: express.Response) => {
@@ -49,6 +56,15 @@ export class SkillBotRouter {
         return router;
     }
 
+    private authenticate(request: express.Request, response: express.Response): boolean {
+        const apiToken = process.env.API_TOKEN as string;
+        if (request.header("x-access-token") !== apiToken) {
+            response.status(403);
+            response.send("Invalid x-access-token set - required for call.");
+            return false;
+        }
+        return true;
+    }
     private process(message: SkillBotMessage): Promise<SkillBotReply> {
         let session;
         if (message.sessionKey() in this.sessions) {

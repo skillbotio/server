@@ -13,7 +13,7 @@ export class UserSession {
     public constructor(private userID: string) {
         // We instantiate a default skill for each user
         // This handles everything not directed at a specific skill
-        const skill = SkillManager.Instance.get("Skillbot Default") as ISkillConfiguration;
+        const skill = SkillManager.INSTANCE.get("Skillbot Default") as ISkillConfiguration;
         this.dataStore = new MessageDataStore();
         if (skill) {
             const defaultAlexa = VirtualAlexa.Builder()

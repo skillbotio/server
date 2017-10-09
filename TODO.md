@@ -41,6 +41,7 @@ AlphaV2
 - [X] Update the favicon for skillbot server
 - [ ] when inviting to join a channel gives asks for onboarding info again
 - [ ] Add version command
+- [ ] Update URLs
 - [ ] enable logless on default skill
 - [ ] why is my literal slot value lowercase?
 - [ ] Automatically toggle between spoke and proxy

@@ -59,7 +59,7 @@ describe("SkillBot End-to-End Tests", function() {
     let server: SkillBotServer;
     beforeEach(async () => {
         server = new SkillBotServer();
-        await server.start(true);
+        await server.start(3001);
 
         const skill: ISkillConfiguration = {
             id: "testID",
@@ -72,7 +72,7 @@ describe("SkillBot End-to-End Tests", function() {
             url: "http://skill.com/fake_url",
         };
 
-        SkillManager.Instance.put(skill);
+        SkillManager.INSTANCE.put(skill);
         await MessageDataStore.initialize();
     });
 

@@ -38,7 +38,7 @@ export class SkillBotMessage {
             for (let i = 0; i < words.length; i++) {
                 const phrase = words.slice(0, i + 1).join(" ");
                 console.log("Phrase: " + phrase);
-                skill = SkillManager.Instance.get(phrase);
+                skill = SkillManager.INSTANCE.get(phrase);
 
                 // If we match a registered skill name, we assume that is what we want to use
                 if (skill) {

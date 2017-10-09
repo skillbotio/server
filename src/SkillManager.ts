@@ -1,7 +1,7 @@
 import {ISkillConfiguration} from "./ISkillConfiguration";
 
 export class SkillManager {
-    public static Instance = new SkillManager();
+    public static INSTANCE = new SkillManager();
     public skills: {[invocationName: string]: ISkillConfiguration} = {};
 
     public get(invocationName: string): ISkillConfiguration | undefined {

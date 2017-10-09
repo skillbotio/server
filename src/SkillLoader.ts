@@ -10,7 +10,7 @@ export class SkillLoader {
         const ds = new SkillDataStore().initialize();
         const skills: {[id: string]: ISkillConfiguration} = await ds.findSkills();
         for (const skillName of Object.keys(skills)) {
-            SkillManager.Instance.put(skills[skillName]);
+            SkillManager.INSTANCE.put(skills[skillName]);
         }
     }
 
