@@ -44,6 +44,7 @@ AlphaV2
 - [ ] Update URLs
 - [X] Create landing page
 - [ ] enable logless on default skill
+- [ ] automate deployment of default-skill
 - [ ] why is my literal slot value lowercase?
 - [ ] Automatically toggle between spoke and proxy
 - [ ] support device location permission
@@ -56,6 +57,7 @@ AlphaV2
 
 AlphaV3
 - [ ] support for flash briefings
+- [ ] Add an FAQ
 - [ ] add audioURL for ssml payload that concatnates voice and text using tts?
 - [ ] How will default skill make data accessible?
 - [ ] how to handle literals?

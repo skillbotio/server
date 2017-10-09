@@ -14,6 +14,8 @@ COPY bin/ ./bin/
 
 COPY src/ ./src/
 
+COPY views/ ./views/
+
 COPY *.json ./
 
 RUN npm install --quiet
