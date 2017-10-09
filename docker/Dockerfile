@@ -14,6 +14,8 @@ COPY bin/ ./bin/
 
 COPY src/ ./src/
 
+COPY static/ ./static/
+
 COPY views/ ./views/
 
 COPY *.json ./
