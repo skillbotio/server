@@ -34,9 +34,15 @@ export class SkillBotServer {
         MessageDataStore.initialize();
 
         await new Promise((resolve, reject) => {
-            this.server = app.listen(serverPort, () => {
-                console.log("SkillBot running on port: " + serverPort);
-                resolve();
+            this.server = app.listen(serverPort, (error: any) => {
+                if (error) {
+                    console.error("SkillBot error: " + error);
+                    reject(error);
+                } else {
+                    console.log("SkillBot running on port: " + serverPort);
+                    resolve();
+                }
+
             });
         });
     }

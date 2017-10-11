@@ -2,6 +2,12 @@ import {ISkillConfiguration} from "./ISkillConfiguration";
 
 export class SkillDataStore {
     private static admin: any;
+
+    // Firebase does not allow . in IDS
+    private static cleanID(id: string) {
+        return id.split(".").join("_");
+    }
+
     private database: any;
 
     public constructor() {
@@ -33,11 +39,14 @@ export class SkillDataStore {
     }
 
     public saveSkill(skill: ISkillConfiguration): Promise<void> {
-        return this.database.ref("skills/" + skill.id).set(skill);
+        // Do NOT save AWS credentials
+        delete skill.aws;
+        return this.database.ref("skillbots/" + SkillDataStore.cleanID(skill.id)).set(skill);
     }
 
     public findSkill(id: string): Promise<ISkillConfiguration | undefined> {
-        return this.database.ref("skills/" + id).once("value").then((snapshot: any) => {
+        id = SkillDataStore.cleanID(id);
+        return this.database.ref("skillbots/" + id).once("value").then((snapshot: any) => {
             if (snapshot.val()) {
                 return Promise.resolve(snapshot.val());
             } else {
@@ -47,11 +56,11 @@ export class SkillDataStore {
     }
 
     public findSkills(): Promise<{[id: string]: ISkillConfiguration}> {
-        return this.database.ref("skills").once("value").then((snapshot: any) => {
+        return this.database.ref("skillbots").once("value").then((snapshot: any) => {
             if (snapshot.val()) {
                 return Promise.resolve(snapshot.val());
             } else {
-                return Promise.resolve(undefined);
+                return Promise.resolve({});
             }
         });
     }

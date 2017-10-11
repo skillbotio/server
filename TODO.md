@@ -44,6 +44,7 @@ AlphaV2
 - [ ] Update URLs
 - [X] Create landing page
 - [ ] support real skill ids
+- [ ] Do we really need to create a source for non-Lambda skillbots?
 - [ ] enable logless on default skill
 - [ ] automate deployment of default-skill
 - [ ] why is my literal slot value lowercase?

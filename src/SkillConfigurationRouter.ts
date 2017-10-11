@@ -3,6 +3,7 @@ import * as express from "express";
 import {ISkillConfiguration} from "./ISkillConfiguration";
 import {SkillDataStore} from "./SkillDataStore";
 import {SkillManager} from "./SkillManager";
+import {ExternalConfiguration} from "./ExternalConfiguration";
 
 export class SkillConfigurationRouter {
     public router(): express.Router {
@@ -32,29 +33,17 @@ export class SkillConfigurationRouter {
             response.json(skill);
         });
 
-        router.get("/skill", async (request: express.Request, response: express.Response) => {
-            const token = request.header("x-access-token");
-            if (token !== process.env.API_ACCESS_TOKEN) {
-                response.status(400);
-                response.send("Invalid request - must include secretKey as header to validate");
-                return;
-            }
-
-            const skills = await dataStore.findSkills();
-            response.json(skills);
-        });
-
         router.post("/skill", async (request: express.Request, response: express.Response) => {
             const skillJSON: ISkillConfiguration = request.body;
             try {
-                const sourceID = skillJSON.sourceID;
-                const source = await dataStore.findSource(sourceID);
-                const secretKey = skillJSON.secretKey;
+                const skillID = skillJSON.id;
+                const skill = await dataStore.findSkill(skillID);
 
-                if (!source) {
-                    return this.notOkay(response, 404, "Source not found: " + request.params.sourceID);
-                } else if (source.secretKey !== secretKey) {
-                    return this.notOkay(response, 403, "Invalid request - secretKey does not match for skill");
+                if (skill) {
+                    skillJSON.secretKey = skill.secretKey;
+                    skillJSON.sourceID = skill.sourceID;
+                } else {
+                    await ExternalConfiguration.configure(skillJSON);
                 }
 
                 await dataStore.saveSkill(skillJSON);

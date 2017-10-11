@@ -8,6 +8,9 @@ export class SkillManager {
         let skill;
         if (invocationName.toLowerCase() in this.skills) {
            skill = this.skills[invocationName.toLowerCase()];
+           if (skill.lambdaARN) {
+               skill.url = "https://" + skill.sourceID + ".bespoken.link";
+           }
         }
         return skill;
     }

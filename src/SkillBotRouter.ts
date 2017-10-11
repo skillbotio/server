@@ -2,8 +2,8 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 import {SkillBotMessage} from "./SkillBotMessage";
 import {SkillBotReply} from "./SkillBotReply";
-import {UserSession} from "./UserSession";
 import {SkillManager} from "./SkillManager";
+import {UserSession} from "./UserSession";
 
 export class SkillBotRouter {
     private sessions: {[id: string]: UserSession} = {};
@@ -60,7 +60,7 @@ export class SkillBotRouter {
     }
 
     private authenticate(request: express.Request, response: express.Response): boolean {
-        const apiToken = process.env.API_TOKEN as string;
+        const apiToken = process.env.API_ACCESS_TOKEN as string;
         if (request.header("x-access-token") !== apiToken) {
             response.status(403);
             response.send("Invalid x-access-token set - required for call.");
@@ -68,6 +68,7 @@ export class SkillBotRouter {
         }
         return true;
     }
+
     private process(message: SkillBotMessage): Promise<SkillBotReply> {
         let session;
         if (message.sessionKey() in this.sessions) {
