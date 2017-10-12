@@ -12,21 +12,10 @@ export class SkillConfigurationRouter {
         router.use(bodyParser.json());
 
         router.get("/skill/:skillID", async (request: express.Request, response: express.Response) => {
-            const secretKey = request.header("secretKey");
-            if (!secretKey) {
-                response.status(400);
-                response.send("Invalid request - must include secretKey as header to validate");
-                return;
-            }
-
             const skill = await dataStore.findSkill(request.params.skillID);
             if (!skill) {
                 response.status(404);
                 response.send("Skill not found: " + request.params.skillID);
-                return;
-            } else if (skill.secretKey !== secretKey) {
-                response.status(403);
-                response.send("Invalid request - secretKey does not match for skill");
                 return;
             }
 

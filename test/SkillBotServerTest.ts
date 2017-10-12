@@ -31,7 +31,7 @@ const interactionModel = {
 };
 
 describe("SkillBot End-to-End Tests", function() {
-    this.timeout(5000);
+    this.timeout(10000);
 
     const mockSkillResponse = {
         response: {
@@ -264,7 +264,7 @@ describe("SkillBot End-to-End Tests", function() {
                 interactionModel,
                 invocationName: "test",
                 name: "test skill",
-                secretKey: "testSecretKey",
+                secretKey: "8e5f16e7-0bb1-40a6-832d-c192c5a72a6f",
                 sourceID: "testDoNotDelete",
                 url: "http://skill.com/fake_url",
             };
