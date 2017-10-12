@@ -252,6 +252,43 @@ describe("SkillBot End-to-End Tests", function() {
             };
             reply = await request(callTwo);
         });
+
+        it("Handles one session for multiple users in channel", async () => {
+            // We use nock to intercept network calls and return a mock response
+            nock("http://skill.com")
+                .post("/fake_url")
+                .reply(200, { response: {} });
+
+            nock("http://skill.com")
+                .post("/fake_url", (body: any) => {
+                    // Test to make sure that the body is set correctly
+                    return body.session.new === false;
+                })
+                .reply(200, { response: {} });
+
+            const options = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK"
+                + "&source=UNIT"
+                + "&channel=CHANNEL_1"
+                + "&utterance=ask skillbot test play",
+            };
+
+            let reply = await request(options);
+            assert.isTrue(reply.raw.request.session.new);
+
+            const callTwo = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK2"
+                + "&source=UNIT"
+                + "&channel=CHANNEL_1"
+                + "&utterance=ask skillbot test play",
+            };
+            reply = await request(callTwo);
+            assert.equal(reply.raw.request.session.user.userId, "JPK");
+        });
     });
 
     describe("Saves/Updates with Skill Configuration", function() {

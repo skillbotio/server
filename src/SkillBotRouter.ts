@@ -6,7 +6,8 @@ import {SkillManager} from "./SkillManager";
 import {UserSession} from "./UserSession";
 
 export class SkillBotRouter {
-    private sessions: {[id: string]: UserSession} = {};
+    private userSessions: {[id: string]: UserSession} = {};
+    private channelSessions: {[id: string]: UserSession} = {};
 
     public router(): express.Router {
         const router = express.Router();
@@ -71,11 +72,26 @@ export class SkillBotRouter {
 
     private process(message: SkillBotMessage): Promise<SkillBotReply> {
         let session;
-        if (message.sessionKey() in this.sessions) {
-            session = this.sessions[message.sessionKey()];
-        } else {
-            session = new UserSession(message.userID);
-            this.sessions[message.sessionKey()] = session;
+        // For messages the come in, if there is already an active skill being used in the channel
+        //  we associate them with that
+        // This allows users to "share" access to a skill
+        if (message.channelKey() in this.channelSessions) {
+            const channelSession = this.channelSessions[message.channelKey()];
+            if (channelSession.isInSkill()) {
+                session = channelSession;
+            }
+        }
+
+        // If no current active skill in the channel, then we use the session associated with the user
+        // Or if the user does not have a session, create a new one
+        if (!session) {
+            if (message.sessionKey() in this.userSessions) {
+                session = this.userSessions[message.sessionKey()];
+            } else {
+                session = new UserSession(message.userID);
+                this.userSessions[message.sessionKey()] = session;
+                this.channelSessions[message.channelKey()] = session;
+            }
         }
 
         return session.handleMessage(message);

@@ -25,6 +25,10 @@ export class SkillBotMessage {
         return this.source + this.channel + this.userID;
     }
 
+    public channelKey(): string {
+        return this.source + this.channel;
+    }
+
     private parse(): void {
         const regex = new RegExp("(ask|tell|open|launch)\\s(.*)");
         const matchArray = this.fullMessage.match(regex);

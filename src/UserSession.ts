@@ -80,6 +80,10 @@ export class UserSession {
         return skillbotReply;
     }
 
+    public isInSkill(): boolean {
+        return this._activeSkill !== undefined;
+    }
+
     private initializeDefaultSkill() {
         const skillInfo = SkillManager.INSTANCE.get("Skillbot Default") as ISkillConfiguration;
 
@@ -89,6 +93,7 @@ export class UserSession {
         this.defaultSkill = new SkillHolder(skillInfo, defaultAlexa);
 
     }
+
     private applyFilter(user: IUser, message: SkillBotMessage, skill: SkillHolder) {
         // Make sure the user ID is set
         skill.virtualAlexa.context().setUserID(this.userID);
