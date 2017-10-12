@@ -39,25 +39,21 @@ AlphaV2
 - [X] try out thumb_url for the skill identification
 - [X] update logo on installation screen for slack - no more silentecho
 - [X] Update the favicon for skillbot server
-- [ ] when inviting to join a channel gives asks for onboarding info again
+- [X] when inviting to join a channel gives asks for onboarding info again
 - [X] Add version command
-- [ ] Update URLs
+- [X] Update URLs
 - [X] Create landing page
-- [ ] support real skill ids
+- [X] support real skill ids
+- [ ] shared sessions for public channels? How to do this?
+- [ ] support device location permission
 - [ ] Do we really need to create a source for non-Lambda skillbots?
 - [ ] enable logless on default skill
 - [ ] automate deployment of default-skill
-- [ ] why is my literal slot value lowercase?
-- [ ] Automatically toggle between spoke and proxy
-- [ ] support device location permission
-- [ ] Lambda security
-    - [ ] Should we use cross-account access?
-    - [ ] https://read.iopipe.com/public-cross-account-functions-on-aws-lambda-bcc148303083
-    - [ ] Instructions on how to limit access to a particular lambda
-    - [ ] lock down spokes
+- [O] why is my literal slot value lowercase?
 - [ ] Make ssml cleaner more robust - allow for escaping \> \<
 
 AlphaV3
+- [ ] Automatically toggle between spoke and proxy
 - [ ] support for flash briefings
 - [ ] public/private setting
 - [ ] Add an FAQ
@@ -71,6 +67,11 @@ AlphaV3
 - [ ] Logo
 - [ ] Make AWS credentials able to be set at profile level
 - [ ] send multiple commands quickly
+- [ ] Lambda security
+    - [ ] Should we use cross-account access?
+    - [ ] https://read.iopipe.com/public-cross-account-functions-on-aws-lambda-bcc148303083
+    - [ ] Instructions on how to limit access to a particular lambda
+    - [ ] lock down spokes
 
 Beta
 - [ ] Integration as command with bst ("botify?")
