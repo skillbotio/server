@@ -34,7 +34,7 @@ export class SkillBotServer {
         // Initialize message data store
         MessageDataStore.initialize();
 
-        if (process.env.SSL_CERT) {
+        if (serverPort === 443) {
             const cert = process.env.SSL_CERT as string;
             const key = process.env.SSL_KEY as string;
 
