@@ -73,9 +73,9 @@ export class SkillBotRouter {
     private process(message: SkillBotMessage): Promise<SkillBotReply> {
         let session;
         // For messages the come in, if there is already an active skill being used in the channel
-        //  we associate them with that
+        //  we associate them with that, unless they explicitly open a different skill
         // This allows users to "share" access to a skill
-        if (message.channelKey() in this.channelSessions) {
+        if (!message.addressesSkill() && message.channelKey() in this.channelSessions) {
             const channelSession = this.channelSessions[message.channelKey()];
             if (channelSession.isInSkill()) {
                 session = channelSession;

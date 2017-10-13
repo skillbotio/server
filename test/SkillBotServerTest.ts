@@ -253,17 +253,42 @@ describe("SkillBot End-to-End Tests", function() {
             reply = await request(callTwo);
         });
 
-        it("Handles one session for multiple users in channel", async () => {
+        it("Handles one sessions for multiple users in channel when interacting with active skill", async () => {
             // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
                 .post("/fake_url")
+                .times(2)
                 .reply(200, { response: {} });
 
+            const options = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK"
+                + "&source=UNIT"
+                + "&channel=CHANNEL_1"
+                + "&utterance=ask skillbot test play",
+            };
+
+            let reply = await request(options);
+            assert.isTrue(reply.raw.request.session.new);
+
+            const callTwo = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK2"
+                + "&source=UNIT"
+                + "&channel=CHANNEL_1"
+                + "&utterance=yes",
+            };
+            reply = await request(callTwo);
+            assert.equal(reply.raw.request.session.user.userId, "JPK");
+        });
+
+        it("Handles two sessions for multiple users in channel when opening a skill", async () => {
+            // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
-                .post("/fake_url", (body: any) => {
-                    // Test to make sure that the body is set correctly
-                    return body.session.new === false;
-                })
+                .post("/fake_url")
+                .times(2)
                 .reply(200, { response: {} });
 
             const options = {
@@ -287,7 +312,7 @@ describe("SkillBot End-to-End Tests", function() {
                 + "&utterance=ask skillbot test play",
             };
             reply = await request(callTwo);
-            assert.equal(reply.raw.request.session.user.userId, "JPK");
+            assert.equal(reply.raw.request.session.user.userId, "JPK2");
         });
     });
 
