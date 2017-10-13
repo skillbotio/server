@@ -25,9 +25,13 @@ export class SkillConfigurationRouter {
         router.post("/skill", async (request: express.Request, response: express.Response) => {
             const skillJSON: ISkillConfiguration = request.body;
             try {
+                console.log("POSTING Skill: " + skillJSON.id + " Name: " + skillJSON.name);
                 const skillID = skillJSON.id;
                 const skill = await dataStore.findSkill(skillID);
 
+                console.log("POSTING Skill: " + skillJSON.id
+                    + " Name: " + skillJSON.name
+                    + " Exists: " + (skill !== undefined));
                 if (skill) {
                     skillJSON.secretKey = skill.secretKey;
                     skillJSON.sourceID = skill.sourceID;
@@ -39,6 +43,8 @@ export class SkillConfigurationRouter {
 
                 // Refresh the cache for this skill
                 SkillManager.INSTANCE.put(skillJSON);
+
+                console.log("POSTING Skill: " + skillJSON.id + " Name: " + skillJSON.name + " Saved");
 
                 // Just send a 200 if this saves
                 response.status(200);
