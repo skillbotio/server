@@ -12,6 +12,7 @@ export class ExternalConfiguration {
     }
 
     private static async createSource(skillbotConfig: ISkillConfiguration): Promise<void> {
+        console.log("Fetch source: " + skillbotConfig.id);
         const source = await request.get({
             json: true,
             uri: "https://source-api.bespoken.tools/v1/sourceId",
@@ -33,10 +34,11 @@ export class ExternalConfiguration {
             body: sourceBody,
             headers: {},
             json: true,
-            timeout: 30000,
+            timeout: 10000,
             uri: "https://source-api.bespoken.tools/v1/createSource",
         };
 
+        console.log("Assign source: " + skillbotConfig.id + " source: " + skillbotConfig.sourceID);
         try {
             await request.post(options);
         } catch (error) {

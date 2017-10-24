@@ -50,12 +50,12 @@ export class SkillConfigurationRouter {
                 response.status(200);
                 response.send();
             } catch (e) {
+                console.error(e);
                 return this.notOkay(response, 500, e.toString());
             }
         });
 
         const dataStore = new SkillDataStore();
-        dataStore.initialize();
         return router;
     }
 

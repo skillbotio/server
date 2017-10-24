@@ -184,6 +184,7 @@ export class UserSession {
                 builder.sampleUtterances(skillUtterance.skill.sampleUtterances);
             }
 
+            console.log("Skill: " + skillUtterance.skill.name + " URL: " + skillUtterance.skill.url);
             builder.skillURL(skillUtterance.skill.url);
             this._activeSkill = new SkillHolder(skillUtterance.skill, builder.create());
         }

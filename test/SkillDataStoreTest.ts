@@ -10,7 +10,7 @@ describe("SkillDataStore Test", function() {
     describe("#initialize()", () => {
         it("Initializes succesfully", async () => {
             try {
-                const ds = await new SkillDataStore().initialize();
+                const ds = new SkillDataStore();
                 assert.isDefined(ds);
             } catch (e) {
                 console.log(e);
@@ -21,7 +21,7 @@ describe("SkillDataStore Test", function() {
 
     describe("#saveSkill()", () => {
         it("Saves and fetches a record", async () => {
-            const ds = new SkillDataStore().initialize();
+            const ds = new SkillDataStore();
             const skill: ISkillConfiguration = {
                 id: "testID",
                 interactionModel: { model: true },
@@ -41,14 +41,14 @@ describe("SkillDataStore Test", function() {
 
     describe("#findSkill()", () => {
         it("Find a record", async () => {
-            const ds = new SkillDataStore().initialize();
+            const ds = new SkillDataStore();
             const savedSkill = await ds.findSkill("testID") as ISkillConfiguration;
             assert.equal(savedSkill.name, "test skill");
             assert.isTrue(savedSkill.interactionModel.model);
         });
 
         it("Cannot find a record", async () => {
-            const ds = new SkillDataStore().initialize();
+            const ds = new SkillDataStore();
             const savedSkill = await ds.findSkill("testIDDoesNotExist") as ISkillConfiguration;
             assert.isUndefined(savedSkill);
         });
@@ -56,7 +56,7 @@ describe("SkillDataStore Test", function() {
 
     describe("#findSkills()", () => {
         it("Finds skills", async () => {
-            const ds = new SkillDataStore().initialize();
+            const ds = new SkillDataStore();
             const savedSkills = await ds.findSkills() as any;
             assert.isTrue(Object.keys(savedSkills).length >= 1);
         });

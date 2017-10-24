@@ -7,7 +7,7 @@ import {SkillManager} from "./SkillManager";
 export class SkillLoader {
 
     public static async loadAll(): Promise<void> {
-        const ds = new SkillDataStore().initialize();
+        const ds = new SkillDataStore();
         const skills: {[id: string]: ISkillConfiguration} = await ds.findSkills();
         for (const skillName of Object.keys(skills)) {
             SkillManager.INSTANCE.put(skills[skillName]);

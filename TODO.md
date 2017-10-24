@@ -44,12 +44,13 @@ AlphaV2
 - [X] Update URLs
 - [X] Create landing page
 - [X] support real skill ids
-- [ ] shared sessions for public channels? How to do this?
+- [X] shared sessions for public channels? How to do this?
+- [O] why is my literal slot value lowercase?
+- [ ] Fix associate to create an array and pass user data (only to default)
 - [ ] support device location permission
 - [ ] Do we really need to create a source for non-Lambda skillbots?
 - [ ] enable logless on default skill
 - [ ] automate deployment of default-skill
-- [O] why is my literal slot value lowercase?
 - [ ] Make ssml cleaner more robust - allow for escaping \> \<
 
 AlphaV3
