@@ -95,6 +95,7 @@ export class UserSession {
     }
 
     private applyFilter(user: IUser, message: SkillBotMessage, skill: SkillHolder) {
+        console.log("Calling Skill: " + skill.skill.name + " URL: " + skill.skill.url);
         // Make sure the user ID is set
         skill.virtualAlexa.context().setUserID(this.userID);
 
@@ -184,7 +185,7 @@ export class UserSession {
                 builder.sampleUtterances(skillUtterance.skill.sampleUtterances);
             }
 
-            console.log("Skill: " + skillUtterance.skill.name + " URL: " + skillUtterance.skill.url);
+            builder.applicationID(skillUtterance.skill.id);
             builder.skillURL(skillUtterance.skill.url);
             this._activeSkill = new SkillHolder(skillUtterance.skill, builder.create());
         }
