@@ -185,6 +185,26 @@ describe("SkillBot End-to-End Tests", function() {
             assert.isTrue(reply.sessionEnded);
         });
 
+        it("Handles missing skill", async () => {
+            // We use nock to intercept network calls and return a mock response
+            nock("http://skill.com")
+                .post("/fake_url")
+                .reply(200, mockSkillResponse);
+
+            const options = {
+                json: true, // Automatically stringifies the body to JSON
+                method: "GET",
+                uri: "http://localhost:3001/message?userID=JPK"
+                + "&source=UNIT"
+                + "&channel=CHANNEL1"
+                + "&utterance=ask nonexistent skill",
+            };
+
+            const reply = await request(options);
+            assert.isFalse(reply.sessionEnded);
+            assert.include(reply.text, "No skill found");
+        });
+
         it("Handles explicit session end", async () => {
             // We use nock to intercept network calls and return a mock response
             nock("http://skill.com")
@@ -250,7 +270,7 @@ describe("SkillBot End-to-End Tests", function() {
                     + "&channel=CHANNEL_2"
                     + "&utterance=ask skillbot test play",
             };
-            let reply = await request(callTwo);
+            const reply = await request(callTwo);
             assert.isTrue(reply.raw.request.session.new);
         });
 

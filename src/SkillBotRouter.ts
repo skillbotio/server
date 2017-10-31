@@ -41,19 +41,24 @@ export class SkillBotRouter {
             const messageString = request.query.utterance;
             const source = request.query.source;
 
-            const message = new SkillBotMessage(source, channel, userID, messageString);
             try {
+                const message = new SkillBotMessage(source, channel, userID, messageString);
                 const reply = await this.process(message);
                 // We respond immediately or we start getting retries
-                response.status(200);
-                response.send(JSON.stringify(reply));
+                response.status(200).send(JSON.stringify(reply));
                 console.log("Response sent");
                 return;
             } catch (e) {
-                console.error(e);
-                response.status(500);
-                response.send(e.toString());
-                return;
+                if (e.message.startsWith("No matching skill")) {
+                    const error = SkillBotReply.error("No skill found that matches this invocation name. Sorry!");
+                    response.status(200).send(JSON.stringify(error));
+                    return;
+                } else {
+                    console.error(e);
+                    response.status(200).send(JSON.stringify(SkillBotReply.error(e.toString())));
+                    return;
+                }
+
             }
         });
 

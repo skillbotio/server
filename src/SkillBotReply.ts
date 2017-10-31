@@ -84,6 +84,12 @@ export class SkillBotReply {
         return reply;
     }
 
+    public static error(errorMessage: string) {
+        const reply = new SkillBotReply();
+        reply.text = errorMessage;
+        return reply;
+    }
+
     private static cleanSSML(ssml: string): string {
         const index = ssml.indexOf("<");
         if (index !== -1) {
