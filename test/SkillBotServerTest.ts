@@ -240,7 +240,7 @@ describe("SkillBot End-to-End Tests", function() {
                     + "&utterance=ask skillbot test play",
             };
 
-            let reply = await request(options);
+            await request(options);
 
             const callTwo = {
                 json: true, // Automatically stringifies the body to JSON
@@ -250,7 +250,8 @@ describe("SkillBot End-to-End Tests", function() {
                     + "&channel=CHANNEL_2"
                     + "&utterance=ask skillbot test play",
             };
-            reply = await request(callTwo);
+            let reply = await request(callTwo);
+            assert.isTrue(reply.raw.request.session.new);
         });
 
         it("Handles one sessions for multiple users in channel when interacting with active skill", async () => {

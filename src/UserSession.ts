@@ -97,7 +97,7 @@ export class UserSession {
     private applyFilter(user: IUser, message: SkillBotMessage, skill: SkillHolder) {
         console.log("Calling Skill: " + skill.skill.name + " URL: " + skill.skill.url);
         // Make sure the user ID is set
-        skill.virtualAlexa.context().setUserID(this.userID);
+        skill.virtualAlexa.context().user().setID(this.userID);
 
         // Set a filter on the VirtualAlexa instance to set data that is useful
         skill.virtualAlexa.filter((request) => {
