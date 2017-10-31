@@ -101,9 +101,6 @@ export class UserSession {
 
         // Set a filter on the VirtualAlexa instance to set data that is useful
         skill.virtualAlexa.filter((request) => {
-            // For debugging - print out the request
-            console.log("Alexa Request: " + JSON.stringify(request, null, 2));
-
             // Capture the request on the message
             message.rawJSON = request;
 
@@ -125,6 +122,9 @@ export class UserSession {
             if (this.onboarding(user)) {
                 request.skillbot.onboarding = true;
             }
+
+            // For debugging - print out the request
+            console.log("Alexa Request: " + JSON.stringify(request, null, 2));
         });
     }
 

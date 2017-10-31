@@ -29,7 +29,7 @@
     "firebase-admin": "^5.2.1",
     "mongoose": "^4.11.12",
     "request-promise-native": "^1.0.4",
-    "virtual-alexa": "^0.3.2"
+    "virtual-alexa": "^0.3.5"
   },
   "devDependencies": {
     "@types/chai": "^4.0.1",
@@ -38,7 +38,7 @@
     "@types/node": "^8.0.28",
     "chai": "^4.1.0",
     "codecov": "^2.3.0",
-    "mocha": "^3.4.2",
+    "mocha": "^3.5.3",
     "nock": "^9.0.14",
     "nyc": "^11.0.3",
     "ts-node": "^3.3.0",
