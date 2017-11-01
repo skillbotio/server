@@ -46,9 +46,10 @@ AlphaV2
 - [X] support real skill ids
 - [X] shared sessions for public channels? How to do this?
 - [O] why is my literal slot value lowercase?
+- [X] skill list should be invocation names
+- [X] return a better error message if a skill does not exist
 - [ ] Fix associate to create an array and pass user data (only to default)
 - [ ] Use nock to get location from automatically without API change
-- [ ] skill list should be invocation names
 - [ ] need to send a fake device ID
 - [ ] support device location permission
 - [ ] Do we really need to create a source for non-Lambda skillbots?
