@@ -55,7 +55,7 @@ export class UserSession {
 
         } else {
             // Otherwise just just send this to the default skill
-            this.applyFilter(user, message, this.defaultSkill);
+            this.applyFilter(user, message, this.defaultSkill, true);
             const json = await this.defaultSkill.virtualAlexa.utter(message.fullMessage);
             skillbotReply = SkillBotReply.alexaResponseToReply(this.defaultSkill.skill, message, json);
         }
@@ -94,7 +94,7 @@ export class UserSession {
 
     }
 
-    private applyFilter(user: IUser, message: SkillBotMessage, skill: SkillHolder) {
+    private applyFilter(user: IUser, message: SkillBotMessage, skill: SkillHolder, defaultSkill: boolean = false) {
         console.log("Calling Skill: " + skill.skill.name + " URL: " + skill.skill.url);
         // Make sure the user ID is set
         skill.virtualAlexa.context().user().setID(this.userID);
@@ -121,6 +121,11 @@ export class UserSession {
 
             if (this.onboarding(user)) {
                 request.skillbot.onboarding = true;
+            }
+
+            // If this is the default skill, we pass the user data
+            if (defaultSkill) {
+                request.skillbot.user = user;
             }
 
             // For debugging - print out the request
