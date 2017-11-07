@@ -1,14 +1,14 @@
 import {ISkillConfiguration} from "./ISkillConfiguration";
-import {SkillBotMessage} from "./SkillBotMessage";
 import {IUser} from "./MessageDataStore";
+import {SkillBotMessage} from "./SkillBotMessage";
 
 export class SkillBotReply {
-    public static alexaResponseToReply(skill: ISkillConfiguration,
-                                       message: SkillBotMessage,
-                                       replyJSON: any): SkillBotReply {
+    public static alexaResponseToReply(message: SkillBotMessage,
+                                       skill: ISkillConfiguration,
+                                       replyJSON?: any): SkillBotReply {
         console.log("Alexa Response: " + JSON.stringify(replyJSON, null, 2));
         const reply = new SkillBotReply();
-        if (replyJSON.response) {
+        if (replyJSON && replyJSON.response) {
             const outputSpeech = replyJSON.response.outputSpeech;
             let isAudio = false;
             if (outputSpeech) {
@@ -70,23 +70,19 @@ export class SkillBotReply {
         return reply;
     }
 
-    public static sessionEnded(skill: ISkillConfiguration, message: SkillBotMessage) {
-        const reply = new SkillBotReply();
-
-        reply.skill = {
-            id: skill.id,
-            imageURL: skill.imageURL,
-            name: skill.name,
-        };
-
+    public static sessionEnded(skill: ISkillConfiguration, message: SkillBotMessage): SkillBotReply {
+        const reply = SkillBotReply.alexaResponseToReply(message, skill);
+        if (!reply.text) {
+            reply.text = "Goodbye!";
+        }
         reply.sessionEnded = true;
-        reply.text = "Goodbye!";
         return reply;
     }
 
     public static error(errorMessage: string) {
         const reply = new SkillBotReply();
         reply.text = errorMessage;
+        reply.raw = {};
         return reply;
     }
 
@@ -103,8 +99,8 @@ export class SkillBotReply {
 
     public card?: ISkillBotCard;
     public raw: {
-        request: any;
-        response: any;
+        request?: any;
+        response?: any;
     };
     public sessionEnded: boolean = false;
     public skill?: {

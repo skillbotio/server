@@ -25,7 +25,7 @@ export class UserSession {
             // If we are onboarding
             this.applyFilter(user, message, this.defaultSkill);
             const json = await this.defaultSkill.virtualAlexa.utter(message.fullMessage);
-            skillbotReply = SkillBotReply.alexaResponseToReply(this.defaultSkill.skill, message, json);
+            skillbotReply = SkillBotReply.alexaResponseToReply(message, this.defaultSkill.skill, json);
 
         } else if (message.addressesSkill()) {
             // If this message explicitly addresses a skill
@@ -37,27 +37,27 @@ export class UserSession {
                 ? await skill.virtualAlexa.launch()
                 : await skill.virtualAlexa.utter(skillUtterance.utterance);
 
-            skillbotReply = SkillBotReply.alexaResponseToReply(skill.skill, message, json);
+            skillbotReply = SkillBotReply.alexaResponseToReply(message, skill.skill, json);
 
         } else if (this._activeSkill) {
             // If we already have an active skill
             this.applyFilter(user, message, this._activeSkill);
             if (message.isEndSession()) {
-                const json = await this._activeSkill.virtualAlexa.endSession();
-                skillbotReply = SkillBotReply.sessionEnded(this._activeSkill.skill, json);
+                await this._activeSkill.virtualAlexa.endSession();
+                skillbotReply = SkillBotReply.sessionEnded(this._activeSkill.skill, message);
 
                 // When we end the session, re-initialize our default skill
                 this.initializeDefaultSkill();
             } else {
                 const json = await this._activeSkill.virtualAlexa.utter(message.fullMessage);
-                skillbotReply = SkillBotReply.alexaResponseToReply(this._activeSkill.skill, message, json);
+                skillbotReply = SkillBotReply.alexaResponseToReply(message, this._activeSkill.skill, json);
             }
 
         } else {
             // Otherwise just just send this to the default skill
             this.applyFilter(user, message, this.defaultSkill, true);
             const json = await this.defaultSkill.virtualAlexa.utter(message.fullMessage);
-            skillbotReply = SkillBotReply.alexaResponseToReply(this.defaultSkill.skill, message, json);
+            skillbotReply = SkillBotReply.alexaResponseToReply(message, this.defaultSkill.skill, json);
         }
 
         if (skillbotReply.sessionEnded) {
@@ -160,7 +160,7 @@ export class UserSession {
         }
 
         // If we have the reply JSON
-        if (reply.raw) {
+        if (reply.raw && reply.raw.response) {
             const sessionAttributes = reply.raw.response.sessionAttributes;
             if (sessionAttributes && sessionAttributes.user) {
                 const userData = sessionAttributes.user;

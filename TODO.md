@@ -48,14 +48,16 @@ AlphaV2
 - [O] why is my literal slot value lowercase?
 - [X] skill list should be invocation names
 - [X] return a better error message if a skill does not exist
-- [ ] Fix associate to create an array and pass user data (only to default)
+- [X] Fix associate to create an array and pass user data (only to default)
+- [X] need to send a fake device ID
+- [X] Improve help instructions
+- [X] automate deployment of default-skill
 - [ ] Use nock to get location from automatically without API change
-- [ ] need to send a fake device ID
 - [ ] support device location permission
 - [ ] Do we really need to create a source for non-Lambda skillbots?
 - [ ] enable logless on default skill
-- [ ] automate deployment of default-skill
 - [ ] Make ssml cleaner more robust - allow for escaping \> \<
+- [ ] remove punctuation from utterances
 
 AlphaV3
 - [ ] Automatically toggle between spoke and proxy
@@ -68,7 +70,6 @@ AlphaV3
     - [ ] Add support for slot matching to virtual alexa
     - [ ] Better slot handling for builtin types - strings, numbers, country
 - [ ] submit to slack
-- [ ] remove punctuation from utterances
 - [ ] Logo
 - [ ] Make AWS credentials able to be set at profile level
 - [ ] send multiple commands quickly
