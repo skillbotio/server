@@ -6,15 +6,15 @@ export class MessageDataStore {
         const uri = process.env.MONGO_URL as string;
         // We use a require here because otherwise we get an error trying to do this assignment to mongoose.Promise
         require("mongoose").Promise = global.Promise;
-        return await mongoose.connect(uri, { useMongoClient: true});
+        return mongoose.connect(uri, { useMongoClient: true});
     }
 
     public async saveUser(user: IUser): Promise<IUser> {
         // If the id is set, means this is an existing document
         if (user._id) {
-            return await userModel.update({ source: user.source, userID: user.userID }, user);
+            return userModel.update({ source: user.source, userID: user.userID }, user);
         } else {
-            return await userModel.create(user);
+            return userModel.create(user);
         }
     }
 
@@ -28,11 +28,11 @@ export class MessageDataStore {
     }
 
     public async saveMessage(message: IMessage): Promise<IMessage> {
-        return await messageModel.create(message);
+        return messageModel.create(message);
     }
 
-    public async findMessageByID(messageID: string): Promise<IMessage> {
-        return await messageModel.findById(messageID) as IMessage;
+    public async findMessageByID(messageID: string): Promise<IMessage | null> {
+        return messageModel.findById(messageID);
     }
 }
 

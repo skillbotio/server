@@ -1,5 +1,5 @@
-import {SkillManager} from "./SkillManager";
 import {ISkillConfiguration} from "./ISkillConfiguration";
+import {SkillManager} from "./SkillManager";
 
 export class SkillBotMessage {
     public skillUtterance?: SkillUtterance;

@@ -1,9 +1,9 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
+import {ExternalConfiguration} from "./ExternalConfiguration";
 import {ISkillConfiguration} from "./ISkillConfiguration";
 import {SkillDataStore} from "./SkillDataStore";
 import {SkillManager} from "./SkillManager";
-import {ExternalConfiguration} from "./ExternalConfiguration";
 
 export class SkillConfigurationRouter {
     public router(): express.Router {

@@ -238,6 +238,8 @@ describe("SkillBot End-to-End Tests", function() {
             };
             reply = await request(callTwo);
             assert.isTrue(reply.sessionEnded);
+            assert.isDefined(reply.raw.request);
+            assert.isUndefined(reply.raw.response);
             assert.equal(reply.text, "Goodbye!");
         });
 

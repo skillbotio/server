@@ -84,6 +84,6 @@ export class ExternalConfiguration {
             options.body.pipeType = "LAMBDA";
         }
 
-        return await request.post(options);
+        return request.post(options);
     }
 }
