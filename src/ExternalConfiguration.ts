@@ -61,7 +61,7 @@ export class ExternalConfiguration {
                 uuid: skillbotConfig.secretKey,
             },
             headers: {
-                "x-access-token": "4772616365-46696f72656c6c61",
+                "x-access-token": process.env.ACCESS_TOKEN,
             },
             json: true, // Automatically parses the JSON string in the response
             timeout: 30000,
